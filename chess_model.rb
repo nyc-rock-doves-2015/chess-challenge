@@ -24,6 +24,10 @@ class Board
       bishop_filter_moves(piece)
     elsif piece.type == :queen
       queen_filter_moves(piece)
+    elsif piece.type == :king
+      king_filter_moves(piece)
+    elsif piece.type == :knight
+      knight_filter_moves(piece)
     end
   end
 
@@ -78,6 +82,23 @@ class Board
     filtered_moves
   end
 
+  def king_filter_moves(king)
+    filtered_moves = []
+    king_directions = [[1, 1], [-1, 1], [1, -1], [-1, -1],[1, 0], [-1, 0], [0, 1], [0, -1]]
+    king_directions.each do |direction|
+      filtered_moves += check_next_spot(king, direction, king.x, king.y, 1)
+    end
+    filtered_moves
+  end
+
+  def knight_filter_moves(knight)
+    filtered_moves = []
+    knight_directions = [[1, 2], [1, -2], [2, 1], [-2, 1], [-1, -2], [-1, 2], [-2, -1], [2, -1]]
+    knight_directions.each do |direction|
+      filtered_moves += check_next_spot(knight, direction, knight.x, knight.y, 1)
+    end
+    filtered_moves
+  end
 
 
   def check_next_spot(piece, direction, x, y, move_count, move_array = [])
@@ -139,6 +160,9 @@ class Pawn < Piece
 end
 
 class King < Piece
+  def type
+    :king
+  end
 end
 
 class Queen < Piece
@@ -162,6 +186,9 @@ class Bishop < Piece
 end
 
 class Knight < Piece
+  def type
+    :knight
+  end
 end
 
 

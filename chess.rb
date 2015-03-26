@@ -36,15 +36,30 @@ bishop1 = Bishop.new('white', 0, 5)
 bishop2 = Bishop.new('black', 3, 2)
 board.place(bishop1, 0, 5)
 board.place(bishop2, 3, 2)
-p board.filter_moves(bishop1)
-p board.filter_moves(bishop2)
+# p board.filter_moves(bishop1)
+# p board.filter_moves(bishop2)
 
 
 queen1 = Queen.new('white', 4, 5)
 queen2 = Queen.new('black', 1, 4)
 board.place(queen1, 4, 5)
 board.place(queen2, 1, 4)
-p board.filter_moves(queen1)
-p board.filter_moves(queen2)
+# p board.filter_moves(queen1)
+# p board.filter_moves(queen2)
+
+king1 = King.new('white', 3, 1)
+king2 = King.new('black', 1, 5)
+board.place(king1, 3, 1)
+board.place(king2, 1, 5)
+# p board.filter_moves(king1)
+# p board.filter_moves(king2)
+
+knight1 = Knight.new('white', 6, 4)
+knight2 = Knight.new('black', 5, 7)
+board.place(knight1, 6, 4)
+board.place(knight2, 5, 7)
+p board.filter_moves(knight1)
+p board.filter_moves(knight2)
+
 
 p board
