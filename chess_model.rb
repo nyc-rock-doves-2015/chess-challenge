@@ -1,3 +1,5 @@
+require 'byebug'
+
 class Board
   def initialize
     @board = Array.new(8) {["-","-","-","-","-","-","-","-"]}
@@ -44,15 +46,29 @@ class Board
   #for a white pawn
   #check_next_spot([0, 1], 2)
   #pawns starts as [0, 1]
-  def check_next_spot(direction, x, y, move_count, move_array = [])
+  def check_next_spot(piece, direction, x, y, move_count, move_array = [])
     #direction is a 2 element array [x, y]
-    return false if move_count == 0
-    return true if
-    x_new = x + direction_array[0]
-    y_new = y + direction_array[1]
+    # byebug
+    return move_array if move_count == 0
+    return false if x > 7 || x < 0 || y > 7 || y < 0  #its off the board
+    # return true if
+    x_new = x + direction[0]
+    y_new = y + direction[1]
+    # byebug
+    return false if @board[x_new][y_new] != "-" && @board[x_new][y_new].color == piece.color
+    # byebug
     if @board[x_new][y_new] == "-"
       move_array << [x_new, y_new]
-      check_next_spot(direction, x_new, y_new, move_count - 1, move_array)
+      # byebug
+      open = check_next_spot(piece, direction, x_new, y_new, move_count - 1, move_array)
+      if open
+        return move_array
+      else
+        move_array.pop
+        return false
+      end
+    elsif @board[x_new][y_new] != "-" && @board[x_new][y_new] != piece.color && piece.type != :pawn
+      move_array << [x_new, y_new]
     end
     move_array
   end
@@ -79,6 +95,10 @@ class Piece
 end
 
 class Pawn < Piece
+
+  def move_count
+    2
+  end
 
   def type
     :pawn
