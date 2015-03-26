@@ -15,7 +15,7 @@ class Board
     }
   end
 
-  def place(piece, x ,y, has_moved=true)
+  def place(piece, x, y, has_moved = true)
     @board[piece.x][piece.y] = "-"
     @board[x][y] = piece
     piece.x = x
@@ -50,9 +50,7 @@ class Board
   end
 
   def validate_piece(player, piece_position)
-    piece_coord = piece_position.split('')
-    row = @board_map[piece_coord[0]].to_i
-    col = piece_coord[1].to_i - 1
+    row, col = split_coordinates(piece_position)
     if @board[row][col] != "-"
       return @board[row][col].color == player
     else
@@ -61,10 +59,15 @@ class Board
   end
 
   def get_piece(piece_position)
+    row, col = split_coordinates(piece_position)
+    @board[row][col]
+  end
+
+  def split_coordinates(piece_position)
     piece_coord = piece_position.split('')
     row = @board_map[piece_coord[0]].to_i
     col = piece_coord[1].to_i - 1
-    @board[row][col]
+    [row, col]
   end
 
   def get_row(position)
@@ -201,12 +204,14 @@ end
 class Piece
   attr_accessor :x, :y, :has_moved
   attr_reader :color
+
   def initialize(color, x, y)
     @color = color
     @x = x
     @y = y
     @has_moved = false
   end
+
 end
 
 class Pawn < Piece
@@ -281,7 +286,5 @@ class Knight < Piece
     :knight
   end
 end
-
-
 
 

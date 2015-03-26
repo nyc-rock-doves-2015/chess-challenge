@@ -69,6 +69,8 @@ board.place(knight2, 5, 7)
 # p board
 # puts board.to_s
 
+# p board.split_coordinates("a5")
+
 def clear_screen
   print "\e[2J\e[H"
 end
