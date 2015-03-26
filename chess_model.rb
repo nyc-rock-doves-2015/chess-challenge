@@ -6,6 +6,7 @@ class Board
   end
 
   def place(piece, x ,y)
+    @board[piece.x][piece.y] = "-"
     @board[x][y] = piece
     piece.x = x
     piece.y = y
