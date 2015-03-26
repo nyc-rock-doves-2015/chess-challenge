@@ -39,9 +39,18 @@ class Board
     board_string
   end
 
-  def get_piece(player, piece_position)
+  #create a string of all moves in chess notation
+  def convert_to_chess_notation(filter_moves_array)
+    move_list = ""
+    filter_moves_array.sort.each do |move|
+      move_list << @board_map.invert[move[0]].to_s
+      move_list << "#{move[1] + 1}, "
+    end
+    move_list
+  end
+
+  def validate_piece(player, piece_position)
     piece_coord = piece_position.split('')
-    # byebug
     row = @board_map[piece_coord[0]].to_i
     col = piece_coord[1].to_i - 1
     if @board[row][col] != "-"
@@ -51,13 +60,30 @@ class Board
     end
   end
 
+  def get_piece(piece_position)
+    piece_coord = piece_position.split('')
+    row = @board_map[piece_coord[0]].to_i
+    col = piece_coord[1].to_i - 1
+    @board[row][col]
+  end
+
+  def get_row(position)
+    piece_coord = position.split('')
+    @board_map[piece_coord[0]].to_i
+  end
+
+  def get_col(position)
+    piece_coord = position.split('')
+    piece_coord[1].to_i - 1
+  end
+
   def game_complete?
     false
   end
 
   def filter_moves(piece, moves_array = [] )
     if piece.type == :pawn
-      pawn_filter_moves(moves_array, piece)
+      pawn_filter_moves(piece)
     elsif piece.type == :rook
       rook_filter_moves(piece)
     elsif piece.type == :bishop
@@ -71,7 +97,7 @@ class Board
     end
   end
 
-  def pawn_filter_moves(moves_array, pawn)
+  def pawn_filter_moves(pawn)
     bad_moves = []
     if pawn.color == 'white'
       direction = [0, 1]
@@ -81,6 +107,9 @@ class Board
     pawn.has_moved ? (move_count = 1) : (move_count = 2)
     filtered_moves = check_next_spot(pawn, direction, pawn.x, pawn.y, move_count)
 
+
+    pawn.color == 'white' ? (y_move = 1) : (y_move = -1)
+    moves_array = [[pawn.x + 1, pawn.y + y_move], [pawn.x - 1, pawn.y + y_move]]
     moves_array.map do |move|
       x_new = move[0]
       y_new = move[1]

@@ -67,26 +67,38 @@ board.place(knight2, 5, 7)
 # print rook2.image
 
 # p board
-puts board.to_s
+# puts board.to_s
+
+def clear_screen
+  print "\e[2J\e[H"
+end
 
 players = ['white', 'black']
 
 while board.game_complete? == false
 
   players.each do |player|
+    clear_screen
+    puts board
     puts "#{player}'s turn"
-    print "#{player}, your move?"
+    print "#{player}, your move? "
     piece_position = gets.chomp
-    until board.get_piece(player, piece_position)
-      puts "You need to select your piece"
-      print "#{player}, your move?"
+    until board.validate_piece(player, piece_position) && !board.filter_moves(board.get_piece(piece_position)).empty?
+      puts "You need to select another piece"
+      print "#{player}, your move? "
       piece_position = gets.chomp
     end
-    # print "moves for #{}"
-
+    piece = board.get_piece(piece_position)
+    puts "moves for #{player} #{piece.image} #{piece_position}: #{board.convert_to_chess_notation(board.filter_moves(piece))}"
+    print "#{player}, move #{piece.image} #{piece_position} where? "
+    move_position = gets.chomp
+    until board.convert_to_chess_notation(board.filter_moves(piece)).include?(move_position)
+      puts "Please enter valid move"
+      print "#{player}, move #{piece.image} #{piece_position} where? "
+      move_position = gets.chomp
+    end
+    board.place(piece, board.get_row(move_position), board.get_col(move_position))
   end
-
-
 
 end
 
