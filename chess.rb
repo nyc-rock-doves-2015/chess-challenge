@@ -58,8 +58,8 @@ knight1 = Knight.new('white', 6, 4)
 knight2 = Knight.new('black', 5, 7)
 board.place(knight1, 6, 4)
 board.place(knight2, 5, 7)
-p board.filter_moves(knight1)
-p board.filter_moves(knight2)
+# p board.filter_moves(knight1)
+# p board.filter_moves(knight2)
 
 # print rook1.image
 # print rook2.image
