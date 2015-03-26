@@ -24,8 +24,27 @@ puts "pawn5"
 # p board.filter_moves(pawn5.possible_moves, pawn5)
 
 rook1 = Rook.new('white', 4, 0)
-rook2 = Rook.new('black', 1, 7)
+rook2 = Rook.new('black', 2, 7)
 board.place(rook1, 4, 0)
-board.place(rook2, 1, 7)
+board.place(rook2, 2, 7)
 
-p board.filter_moves(rook1)
+# p board.filter_moves(rook1)
+# p board.filter_moves(rook2)
+# board.place(rook2, 2, 5)
+
+bishop1 = Bishop.new('white', 0, 5)
+bishop2 = Bishop.new('black', 3, 2)
+board.place(bishop1, 0, 5)
+board.place(bishop2, 3, 2)
+p board.filter_moves(bishop1)
+p board.filter_moves(bishop2)
+
+
+queen1 = Queen.new('white', 4, 5)
+queen2 = Queen.new('black', 1, 4)
+board.place(queen1, 4, 5)
+board.place(queen2, 1, 4)
+p board.filter_moves(queen1)
+p board.filter_moves(queen2)
+
+p board

@@ -5,7 +5,7 @@ class Board
     @board = Array.new(8) {["-","-","-","-","-","-","-","-"]}
   end
 
-  def place(piece, x ,y)
+  def place(piece, x ,y, has_moved=true)
     @board[piece.x][piece.y] = "-"
     @board[x][y] = piece
     piece.x = x
@@ -18,8 +18,12 @@ class Board
   def filter_moves(piece, moves_array = [] )
     if piece.type == :pawn
       pawn_filter_moves(moves_array, piece)
-    elsif piece.type = :rook
+    elsif piece.type == :rook
       rook_filter_moves(piece)
+    elsif piece.type == :bishop
+      bishop_filter_moves(piece)
+    elsif piece.type == :queen
+      queen_filter_moves(piece)
     end
   end
 
@@ -49,22 +53,43 @@ class Board
   end
 
   def rook_filter_moves(rook)
+    filtered_moves = []
     rook_directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
     rook_directions.each do |direction|
-      filtered_moves << check_next_spot(rook, direction, rook.x, rook.y, 8)
+      filtered_moves += check_next_spot(rook, direction, rook.x, rook.y, 8)
     end
-    p filtered_moves
     filtered_moves
   end
+
+  def bishop_filter_moves(bishop)
+    filtered_moves = []
+    bishop_directions = [[1, 1], [-1, 1], [1, -1], [-1, -1]]
+    bishop_directions.each do |direction|
+      filtered_moves += check_next_spot(bishop, direction, bishop.x, bishop.y, 8)
+    end
+    filtered_moves
+  end
+  def queen_filter_moves(queen)
+    filtered_moves = []
+    queen_directions = [[1, 1], [-1, 1], [1, -1], [-1, -1],[1, 0], [-1, 0], [0, 1], [0, -1]]
+    queen_directions.each do |direction|
+      filtered_moves += check_next_spot(queen, direction, queen.x, queen.y, 8)
+    end
+    filtered_moves
+  end
+
 
 
   def check_next_spot(piece, direction, x, y, move_count, move_array = [])
     #direction is a 2 element array [x, y]
     return move_array if move_count == 0
-    return false if x > 7 || x < 0 || y > 7 || y < 0  #its off the board
     x_new = x + direction[0]
     y_new = y + direction[1]
-    return false if @board[x_new][y_new] != "-" && @board[x_new][y_new].color == piece.color
+    return move_array if x_new > 7 || x_new < 0 || y_new > 7 || y_new < 0  #its off the board
+    # byebug
+    # return false if @board[x_new][y_new].nil?
+    # byebug
+    return move_array if @board[x_new][y_new] != "-" && @board[x_new][y_new].color == piece.color
     if @board[x_new][y_new] == "-"
       move_array << [x_new, y_new]
       open = check_next_spot(piece, direction, x_new, y_new, move_count - 1, move_array)
@@ -117,6 +142,9 @@ class King < Piece
 end
 
 class Queen < Piece
+  def type
+    :queen
+  end
 end
 
 class Rook < Piece
@@ -128,6 +156,9 @@ class Rook < Piece
 end
 
 class Bishop < Piece
+  def type
+    :bishop
+  end
 end
 
 class Knight < Piece
