@@ -15,9 +15,11 @@ class Board
   def to_s
   end
 
-  def filter_moves(moves_array, piece)
+  def filter_moves(piece, moves_array = [] )
     if piece.type == :pawn
       pawn_filter_moves(moves_array, piece)
+    elsif piece.type = :rook
+      rook_filter_moves(piece)
     end
   end
 
@@ -44,6 +46,15 @@ class Board
     end
     filtered_attacks = moves_array - bad_moves
     filtered_moves + filtered_attacks
+  end
+
+  def rook_filter_moves(rook)
+    rook_directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+    rook_directions.each do |direction|
+      filtered_moves << check_next_spot(rook, direction, rook.x, rook.y, 8)
+    end
+    p filtered_moves
+    filtered_moves
   end
 
 
@@ -92,10 +103,6 @@ end
 
 class Pawn < Piece
 
-  def move_count
-    2
-  end
-
   def type
     :pawn
   end
@@ -113,6 +120,11 @@ class Queen < Piece
 end
 
 class Rook < Piece
+
+  def type
+    :rook
+  end
+
 end
 
 class Bishop < Piece
