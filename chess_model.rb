@@ -20,6 +20,14 @@ class Board
 
   def pawn_filter_moves(moves_array, pawn)
     bad_moves = []
+    if pawn.color == 'white'
+      direction = [0, 1]
+    else
+      direction = [0, -1]
+    end
+    pawn.has_moved ? (move_count = 1) : (move_count = 2)
+    filtered_moves = check_next_spot(pawn, direction, pawn.x, pawn.y, move_count)
+
     moves_array.map do |move|
       x_new = move[0]
       y_new = move[1]
@@ -31,8 +39,8 @@ class Board
         bad_moves << move
       end
     end
-    filtered_moves = moves_array - bad_moves
-    filtered_moves
+    filtered_attacks = moves_array - bad_moves
+    filtered_moves + filtered_attacks
   end
 
   #pawns
@@ -106,12 +114,7 @@ class Pawn < Piece
 
   def possible_moves
     @color == 'white' ? (y_move = 1) : (y_move = -1)
-    possible_moves_array = [[x, y + y_move], [x+1, y + y_move], [x-1, y + y_move]]
-    if !@has_moved
-      possible_moves_array << [x, y + (y_move)*2]
-      @has_moved = true
-    end
-    possible_moves_array
+    [[x+1, y + y_move], [x-1, y + y_move]]
   end
 end
 
