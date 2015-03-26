@@ -20,7 +20,7 @@ board.place(pawn7, 4, 3)
 pawn4.has_moved = true
 pawn5.has_moved = true
 
-puts "pawn5"
+# puts "pawn5"
 # p board.filter_moves(pawn5.possible_moves, pawn5)
 
 rook1 = Rook.new('white', 4, 0)
@@ -61,5 +61,8 @@ board.place(knight2, 5, 7)
 p board.filter_moves(knight1)
 p board.filter_moves(knight2)
 
+# print rook1.image
+# print rook2.image
 
-p board
+# p board
+puts board.to_s

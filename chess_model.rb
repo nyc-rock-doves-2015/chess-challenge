@@ -13,6 +13,20 @@ class Board
   end
 
   def to_s
+    board_string = ""
+    row_number = 8
+    @board.transpose.reverse.map do |row|
+      board_string << "#{row_number} "
+      row.map do |cell|
+        # puts cell
+        board_string << "  " if cell == "-"
+        board_string << "#{cell.image} " if cell != "-"
+      end
+      row_number -= 1
+      board_string << "\n"
+    end
+    board_string << "  A B C D E F G H"
+    board_string
   end
 
   def filter_moves(piece, moves_array = [] )
@@ -149,6 +163,10 @@ end
 
 class Pawn < Piece
 
+  def image
+    color == 'white' ? "♙" : "♟"
+  end
+
   def type
     :pawn
   end
@@ -157,21 +175,36 @@ class Pawn < Piece
     @color == 'white' ? (y_move = 1) : (y_move = -1)
     [[x+1, y + y_move], [x-1, y + y_move]]
   end
+
 end
 
 class King < Piece
+
+  def image
+    color == 'white' ? "♔" : "♚"
+  end
+
   def type
     :king
   end
 end
 
 class Queen < Piece
+
+  def image
+    color == 'white' ? "♕" : "♛"
+  end
+
   def type
     :queen
   end
 end
 
 class Rook < Piece
+
+  def image
+    color == 'white' ? "♖" : "♜"
+  end
 
   def type
     :rook
@@ -180,12 +213,22 @@ class Rook < Piece
 end
 
 class Bishop < Piece
+
+  def image
+    color == 'white' ? "♗" : "♝"
+  end
+
   def type
     :bishop
   end
 end
 
 class Knight < Piece
+
+  def image
+    color == 'white' ? "♘" : "♞"
+  end
+
   def type
     :knight
   end
