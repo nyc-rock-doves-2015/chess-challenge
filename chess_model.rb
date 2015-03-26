@@ -11,20 +11,50 @@ class Board
   end
 
   def filter_moves(moves_array, piece)
+    if piece.type == :pawn
+      pawn_filter_moves(moves_array, piece)
+    end
+  end
+
+  def pawn_filter_moves(moves_array, pawn)
     bad_moves = []
     moves_array.map do |move|
       x_new = move[0]
       y_new = move[1]
-      if @board[x_new][y_new] != "-" &&  x_new == piece.x
+      if @board[x_new][y_new] != "-" &&  x_new == pawn.x
         bad_moves << move
-      elsif @board[x_new][y_new] == "-" && x_new != piece.x
+      elsif @board[x_new][y_new] == "-" && x_new != pawn.x
         bad_moves << move
-      elsif @board[x_new][y_new] != "-" && x_new != piece.x && @board[x_new][y_new].color == piece.color
+      elsif @board[x_new][y_new] != "-" && x_new != pawn.x && @board[x_new][y_new].color == pawn.color
         bad_moves << move
       end
     end
     filtered_moves = moves_array - bad_moves
     filtered_moves
+  end
+
+  #pawns
+  #if check_next_spot is true, we add the space to our move_array and go to the next space (recurse)
+  #if check_next_spot is false, then we stop adding the spaces to our move_array
+  #when is it false?
+  #we run into a piece (if same color, do not add that space. If opposite color, include space and THEN stop)
+  #we run into the border
+
+
+  #for a white pawn
+  #check_next_spot([0, 1], 2)
+  #pawns starts as [0, 1]
+  def check_next_spot(direction, x, y, move_count, move_array = [])
+    #direction is a 2 element array [x, y]
+    return false if move_count == 0
+    return true if
+    x_new = x + direction_array[0]
+    y_new = y + direction_array[1]
+    if @board[x_new][y_new] == "-"
+      move_array << [x_new, y_new]
+      check_next_spot(direction, x_new, y_new, move_count - 1, move_array)
+    end
+    move_array
   end
 
   def capture
@@ -49,6 +79,11 @@ class Piece
 end
 
 class Pawn < Piece
+
+  def type
+    :pawn
+  end
+
   def possible_moves
     @color == 'white' ? (y_move = 1) : (y_move = -1)
     possible_moves_array = [[x, y + y_move], [x+1, y + y_move], [x-1, y + y_move]]
@@ -56,6 +91,7 @@ class Pawn < Piece
       possible_moves_array << [x, y + (y_move)*2]
       @has_moved = true
     end
+    possible_moves_array
   end
 end
 
