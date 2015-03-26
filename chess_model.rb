@@ -38,20 +38,24 @@ end
 # board
 
 class Piece
-  attr_accessor :x, :y, :movement
+  attr_accessor :x, :y, :has_moved
   attr_reader :color
   def initialize(color, x, y)
     @color = color
     @x = x
     @y = y
-    @movement = false
+    @has_moved = false
   end
 end
 
 class Pawn < Piece
   def possible_moves
-    color == 'white' ? (y_move = 1) : (y_move = -1)
-    [[x, y + y_move], [x+1, y + y_move], [x-1, y + y_move]]
+    @color == 'white' ? (y_move = 1) : (y_move = -1)
+    possible_moves_array = [[x, y + y_move], [x+1, y + y_move], [x-1, y + y_move]]
+    if !@has_moved
+      possible_moves_array << [x, y + (y_move)*2]
+      @has_moved = true
+    end
   end
 end
 

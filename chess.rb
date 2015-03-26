@@ -19,6 +19,7 @@ board.place(pawn7, 4, 3)
 
 # p pawn1.possible_moves
 # p board
+p pawn4.possible_moves
 p board.filter_moves(pawn4.possible_moves, pawn4)
 p board.filter_moves(pawn5.possible_moves, pawn5)
 p board.filter_moves(pawn6.possible_moves, pawn6)
