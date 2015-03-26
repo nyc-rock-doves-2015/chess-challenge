@@ -3,6 +3,16 @@ require 'byebug'
 class Board
   def initialize
     @board = Array.new(8) {["-","-","-","-","-","-","-","-"]}
+    @board_map = {
+      "a" => 0,
+      "b" => 1,
+      "c" => 2,
+      "d" => 3,
+      "e" => 4,
+      "f" => 5,
+      "g" => 6,
+      "h" => 7
+    }
   end
 
   def place(piece, x ,y, has_moved=true)
@@ -25,8 +35,24 @@ class Board
       row_number -= 1
       board_string << "\n"
     end
-    board_string << "  A B C D E F G H"
+    board_string << "  a b c d e f g h"
     board_string
+  end
+
+  def get_piece(player, piece_position)
+    piece_coord = piece_position.split('')
+    # byebug
+    row = @board_map[piece_coord[0]].to_i
+    col = piece_coord[1].to_i - 1
+    if @board[row][col] != "-"
+      return @board[row][col].color == player
+    else
+      false
+    end
+  end
+
+  def game_complete?
+    false
   end
 
   def filter_moves(piece, moves_array = [] )
@@ -140,15 +166,11 @@ class Board
     move_array
   end
 
-  def capture
-  end
-
   def check?
   end
+
 end
 
-# board = Board.new
-# board
 
 class Piece
   attr_accessor :x, :y, :has_moved

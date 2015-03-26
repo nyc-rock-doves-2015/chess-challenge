@@ -1,5 +1,7 @@
 require_relative "chess_model.rb"
 
+# class Game
+
 board = Board.new
 # pawn1 = Pawn.new('white', 3, 4)
 # pawn2 = Pawn.new('white', 3, 5)
@@ -66,3 +68,25 @@ board.place(knight2, 5, 7)
 
 # p board
 puts board.to_s
+
+players = ['white', 'black']
+
+while board.game_complete? == false
+
+  players.each do |player|
+    puts "#{player}'s turn"
+    print "#{player}, your move?"
+    piece_position = gets.chomp
+    until board.get_piece(player, piece_position)
+      puts "You need to select your piece"
+      print "#{player}, your move?"
+      piece_position = gets.chomp
+    end
+    # print "moves for #{}"
+
+  end
+
+
+
+end
+
