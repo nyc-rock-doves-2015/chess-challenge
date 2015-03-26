@@ -176,9 +176,6 @@ class Board
     x_new = x + direction[0]
     y_new = y + direction[1]
     return move_array if x_new > 7 || x_new < 0 || y_new > 7 || y_new < 0  #its off the board
-    # byebug
-    # return false if @board[x_new][y_new].nil?
-    # byebug
     return move_array if @board[x_new][y_new] != "-" && @board[x_new][y_new].color == piece.color
     if @board[x_new][y_new] == "-"
       move_array << [x_new, y_new]
