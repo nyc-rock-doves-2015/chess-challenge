@@ -10,15 +10,21 @@ class Board
   def to_s
   end
 
-  def filter_moves(moves_array,piece)
-    moves_array.delete_if do |move|
+  def filter_moves(moves_array, piece)
+    bad_moves = []
+    moves_array.map do |move|
       x_new = move[0]
       y_new = move[1]
-      @board[x_new][y_new] != "-" && x_new == 0
-      @board[x_new][y_new].color == self.color && x_new != 0
-
+      if @board[x_new][y_new] != "-" &&  x_new == piece.x
+        bad_moves << move
+      elsif @board[x_new][y_new] == "-" && x_new != piece.x
+        bad_moves << move
+      elsif @board[x_new][y_new] != "-" && x_new != piece.x && @board[x_new][y_new].color == piece.color
+        bad_moves << move
+      end
     end
-    moves_array
+    filtered_moves = moves_array - bad_moves
+    filtered_moves
   end
 
   def capture
@@ -44,7 +50,8 @@ end
 
 class Pawn < Piece
   def possible_moves
-    [[x, y+1], [x+1, y+1], [x-1, y+1]]
+    color == 'white' ? (y_move = 1) : (y_move = -1)
+    [[x, y + y_move], [x+1, y + y_move], [x-1, y + y_move]]
   end
 end
 
