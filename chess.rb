@@ -22,15 +22,17 @@ board.place(pawn7, 4, 3)
 # p pawn4.possible_moves
 pawn4.has_moved = true
 pawn5.has_moved = true
-puts "pawn4"
-p board.filter_moves(pawn4.possible_moves, pawn4)
+# puts "pawn4"
+# p board.filter_moves(pawn4.possible_moves, pawn4)
 puts "pawn5"
 p board.filter_moves(pawn5.possible_moves, pawn5)
-puts "pawn6"
-p board.filter_moves(pawn6.possible_moves, pawn6)
-puts "pawn7"
-p board.filter_moves(pawn7.possible_moves, pawn7)
-puts "check next spot"
+# puts "pawn6"
+# p board.filter_moves(pawn6.possible_moves, pawn6)
+# puts "pawn7"
+# p board.filter_moves(pawn7.possible_moves, pawn7)
+# puts "check next spot"
+
+# pawn5.place
 # p board.check_next_spot(pawn4, [0,-1], pawn4.x, pawn4.y, pawn4.move_count)
 # p board.check_next_spot(pawn5, [0,1], pawn5.x, pawn5.y, pawn5.move_count)
 # p board.check_next_spot(pawn6, [0,1], pawn6.x, pawn6.y, pawn6.move_count)

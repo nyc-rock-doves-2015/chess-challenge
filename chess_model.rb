@@ -7,6 +7,8 @@ class Board
 
   def place(piece, x ,y)
     @board[x][y] = piece
+    piece.x = x
+    piece.y = y
   end
 
   def to_s
@@ -43,31 +45,16 @@ class Board
     filtered_moves + filtered_attacks
   end
 
-  #pawns
-  #if check_next_spot is true, we add the space to our move_array and go to the next space (recurse)
-  #if check_next_spot is false, then we stop adding the spaces to our move_array
-  #when is it false?
-  #we run into a piece (if same color, do not add that space. If opposite color, include space and THEN stop)
-  #we run into the border
 
-
-  #for a white pawn
-  #check_next_spot([0, 1], 2)
-  #pawns starts as [0, 1]
   def check_next_spot(piece, direction, x, y, move_count, move_array = [])
     #direction is a 2 element array [x, y]
-    # byebug
     return move_array if move_count == 0
     return false if x > 7 || x < 0 || y > 7 || y < 0  #its off the board
-    # return true if
     x_new = x + direction[0]
     y_new = y + direction[1]
-    # byebug
     return false if @board[x_new][y_new] != "-" && @board[x_new][y_new].color == piece.color
-    # byebug
     if @board[x_new][y_new] == "-"
       move_array << [x_new, y_new]
-      # byebug
       open = check_next_spot(piece, direction, x_new, y_new, move_count - 1, move_array)
       if open
         return move_array
