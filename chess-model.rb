@@ -95,13 +95,13 @@ class Board
       elsif key == 'G8'
         @board[key] = Knight.new('black')
       elsif key == 'C1'
-        @board[key] = Bishop.new('white')
+        @board[key] = Bishop.new('white', 'black')
       elsif key == 'F1'
-        @board[key] = Bishop.new('white')
+        @board[key] = Bishop.new('white', 'white')
       elsif key == 'C8'
-        @board[key] = Bishop.new('black')
+        @board[key] = Bishop.new('black', 'white')
       elsif key == 'F8'
-        @board[key] = Bishop.new('black')
+        @board[key] = Bishop.new('black', 'black')
       elsif key == 'D1'
         @board[key] = Queen.new('white')
       elsif key == 'D8'
@@ -159,9 +159,10 @@ class Queen
 end
 
 class Bishop
-  attr_reader :color, :glyph
-  def initialize(color)
+  attr_reader :color, :glyph, :tile_color
+  def initialize(color, tile_color)
     @color = color
+    @tile_color = tile_color
     if @color == "black"
       @glyph = "♝"
     else
@@ -213,7 +214,7 @@ class Moves
 end
 
 
-board = Board.new
+# board = Board.new
 # p board.board
 # board.new_game
 # board.move_chess
@@ -223,3 +224,6 @@ board = Board.new
 #   print value
 #   puts
 # end
+
+# glendalys = Queen.new('black')
+# glendalys.class.name

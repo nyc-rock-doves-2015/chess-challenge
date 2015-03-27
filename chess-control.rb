@@ -38,26 +38,34 @@ class Control
   end
 
   def valid?(current, destination)
-    if @model.board[current] == nil
+    piece_to_move = @model.board[current]
+    tile_to_go = @model.board[destination]
+
+    if piece_to_move == nil
       puts "There's no piece to move at #{current}"
       current_valid = false
     else
       current_valid = true
     end
 
-    if @model.board[destination] != nil
-      puts "You cannot move your piece to #{destination}"
-      if @model.board[current].color == @model.board[destination].color
-        return false
-      else
+    if MOVES[piece_to_move.class.name.downcase][current].include?(destination)
+      if tile_to_go == nil
         return true
+      else #if not empty
+        if piece_to_move.color == tile_to_go.color
+          puts "You cannot move your piece to #{destination}"
+          return false
+        else
+          return true
+        end
       end
-    else
-      destination_valid =  true
     end
-
     return current_valid && destination_valid
   end
+
+  #knight, rook, queen, king
+  #white_pawn, black_pawn
+  #white_sq_bishop, black_sq_bishop
 
   def ask_move
     @view.current_prompt
