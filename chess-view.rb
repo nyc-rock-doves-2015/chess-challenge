@@ -38,10 +38,13 @@ class View
     puts "Piece to move? (i.e. A3, D7..)"
     @current = gets.chomp.upcase
   end
+
   def destination_prompt
     puts "Destination? (i.e. A3, D7..)"
     @destination = gets.chomp.upcase
   end
+
+
 
   def prompt_promote
     puts "What piece would you like to promote to? (i.e. Queen, Rook..)"
@@ -75,7 +78,7 @@ class View
         elsif piece.is_a? String
           print piece + " "
         else
-          print piece.glyph + " "
+          print piece.glyph.to_s + " "
         end
         print "  "
       end

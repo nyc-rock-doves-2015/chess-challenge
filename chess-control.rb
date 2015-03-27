@@ -5,7 +5,8 @@ require_relative 'possible-moves-hash'
 require 'byebug'
 
 class Control
-  attr_reader :view, :model, :promotion_spot
+  attr_reader :view, :model
+  attr_accessor :promotion_spot
 
   def initialize
     @view = View.new
@@ -49,30 +50,38 @@ class Control
   end
 
   def check_promote?
-    black_promotion = {}
-    white_promotion = {}
     @model.board.each do |spot, piece|
       if spot.include?('1') && piece.class.name == "Black_pawn"
-        black_promotion[spot] = piece
         @promotion_spot = spot
       end
     end
+
     @model.board.each do |spot, piece|
       if spot.include?('8') && piece.class.name == "White_pawn"
-        white_promotion[spot] = piece
         @promotion_spot = spot
       end
     end
-    if black_promotion.length > 0 || white_promotion.length > 0
-      return true
-    else
+
+    if @promotion_spot == nil
       return false
+    else
+      return true
     end
   end
 
   def promote
-    if check_promote?
+    if @promotion_spot.include?('1')
+      @model.board[@promotion_spot] = Object.const_get(@view.revival_piece).new("black")
+    elsif @promotion_spot.include?('8')
+      @model.board[@promotion_spot] = Object.const_get(@view.revival_piece).new("white")
+    end
+  end
 
+  def promotion_cycle
+    check_promote?
+    if @promotion_spot != nil
+      @view.prompt_promote
+      promote
     end
   end
 
@@ -94,11 +103,14 @@ class Control
     @view.test_prompt
     place
     @view.to_s(@model.board)
+    promotion_cycle
+    @view.to_s(@model.board)
     @view.test_prompt
     place
-
-    p check_promote?
-    p @promotion_spot
+    @view.to_s(@model.board)
+    # p check_promote?
+    promotion_cycle
+    @view.to_s(@model.board)
 
   end
 
