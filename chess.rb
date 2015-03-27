@@ -126,6 +126,7 @@ while board.game_complete? == false
   players.each_with_index do |player, index|
     clear_screen
     puts board
+    board.turn += 1
     puts "#{player}'s turn"
     print "#{player}, your move? "
     piece_position = gets.chomp
@@ -151,7 +152,7 @@ while board.game_complete? == false
       puts "#{player} wins!"
       break
     end
-    sleep(2)
+    sleep(1)
   end
 
 end
