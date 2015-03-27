@@ -1,8 +1,12 @@
 require 'byebug'
 
 class Board
+  attr_accessor :turn
+  attr_reader :board
+
   def initialize
     @board = Array.new(8) {["-","-","-","-","-","-","-","-"]}
+    @turn = 0
     @board_map = {
       "a" => 0,
       "b" => 1,
@@ -21,6 +25,7 @@ class Board
     piece.x = x
     piece.y = y
     piece.has_moved = has_moved
+    piece.turn = @turn
   end
 
   def to_s
@@ -29,7 +34,6 @@ class Board
     @board.transpose.reverse.map do |row|
       board_string << "#{row_number} "
       row.map do |cell|
-        # puts cell
         board_string << "  " if cell == "-"
         board_string << "#{cell.image} " if cell != "-"
       end
@@ -82,6 +86,14 @@ class Board
   end
 
   def game_complete?
+    king_count = 0
+    @board.each do |row|
+      row.each do |cell|
+        next if cell == "-"
+        king_count += 1 if cell.type == :king
+      end
+    end
+    return true if king_count == 1
     false
   end
 
@@ -111,8 +123,11 @@ class Board
     capture_array = [[pawn.x + 1, pawn.y + y_move], [pawn.x - 1, pawn.y + y_move]]
     capture_array.each do |move|
       x_new, y_new = move
+      #it was the double move
+      #turn = turn + 1
       if x_new > 7 || x_new < 0
         invalid_moves << move
+      # elsif @board[pawn.x + 1][pawn.y].type == :pawn && @board[pawn.x + 1][pawn.y].turn == (turn + 1)
       elsif @board[x_new][y_new] == "-"
         invalid_moves << move
       elsif @board[x_new][y_new] != "-" && @board[x_new][y_new].color == pawn.color
@@ -139,8 +154,22 @@ class Board
   end
 
   def king_filter_moves(king)
-    king_directions = [[1, 1], [-1, 1], [1, -1], [-1, -1],[1, 0], [-1, 0], [0, 1], [0, -1]]
-    piece_filter_moves(king, king_directions, 1)
+    king_directions = [[1, 1], [-1, 1], [1, -1], [-1, -1], [1, 0], [-1, 0], [0, 1], [0, -1]]
+    pre_filter_moves = piece_filter_moves(king, king_directions, 1)
+    #castling conditions
+    if !king.has_moved && king.color == 'white' && @board[7][0].type == :rook && @board[7][0].has_moved == false && @board[5][0] == "-" && @board[6][0] == "-"
+      pre_filter_moves << [6, 0]
+    end
+    if !king.has_moved && king.color == 'white' && @board[0][0].type == :rook && @board[0][0].has_moved == false && @board[1][0] == "-" && @board[2][0] == "-" && @board[3][0] == "-"
+      pre_filter_moves << [2, 0]
+    end
+    if !king.has_moved && king.color == 'black' && @board[0][7].type == :rook && @board[0][7].has_moved == false && @board[1][7] == "-" && @board[2][7] == "-" && @board[3][7] == "-"
+      pre_filter_moves << [2, 7]
+    end
+    if !king.has_moved && king.color == 'black' && @board[7][7].type == :rook && @board[7][7].has_moved == false && @board[5][7] == "-" && @board[6][7] == "-"
+      pre_filter_moves << [6, 7]
+    end
+    pre_filter_moves
   end
 
   def knight_filter_moves(knight)
@@ -158,7 +187,6 @@ class Board
 
 
   def check_next_spot(piece, direction, x, y, move_count, move_array = [])
-    #direction is a 2 element array [x, y]
     return move_array if move_count == 0
     x_new = x + direction[0]
     y_new = y + direction[1]
@@ -184,9 +212,8 @@ class Board
 
 end
 
-
 class Piece
-  attr_accessor :x, :y, :has_moved
+  attr_accessor :x, :y, :has_moved, :turn
   attr_reader :color
 
   def initialize(color, x, y)
@@ -199,6 +226,13 @@ class Piece
 end
 
 class Pawn < Piece
+
+  attr_accessor :double_move
+
+  def initialize(color, x, y)
+    super(color, x, y)
+    @double_move = false
+  end
 
   def image
     color == 'white' ? "♙" : "♟"

@@ -41,6 +41,8 @@ board = Board.new
 # board.place(knight1, 6, 4)
 # board.place(knight2, 5, 7)
 
+# puts knight1.class
+
 pawn1 = Pawn.new('white', 0, 1)
 pawn2 = Pawn.new('white', 1, 1)
 pawn3 = Pawn.new('white', 2, 1)
@@ -121,9 +123,10 @@ players = ['white', 'black']
 
 while board.game_complete? == false
 
-  players.each do |player|
+  players.each_with_index do |player, index|
     clear_screen
     puts board
+    board.turn += 1
     puts "#{player}'s turn"
     print "#{player}, your move? "
     piece_position = gets.chomp
@@ -141,7 +144,55 @@ while board.game_complete? == false
       print "#{player}, move #{piece.image} #{piece_position} where? "
       move_position = gets.chomp
     end
+    if board.get_piece(move_position) != "-"
+      puts "#{player} captured #{players[index - 1]}'s #{board.get_piece(move_position).image} at #{move_position}"
+    end
+    if piece.type == :king && move_position == "c1"
+      board.place(board.board[0][0], 3, 0)
+    elsif piece.type == :king && move_position == "g1"
+      board.place(board.board[7][0], 5, 0)
+    elsif piece.type == :king && move_position == "c8"
+      board.place(board.board[0][7], 3, 7)
+    elsif piece.type == :king && move_position == "g8"
+      board.place(board.board[7][7], 5, 7)
+    end
     board.place(piece, board.get_row(move_position), board.get_col(move_position), true)
+    p piece
+    if piece.type == :pawn && piece.y == 7
+      puts "What piece do you want to promote your pawn to"
+      puts "Q:♛ R:♜ B:♝ K:♞"
+      promotion = gets.chomp.upcase
+      case promotion
+      when "Q"
+        board.place(Queen.new('white', piece.x, piece.y), piece.x, piece.y)
+      when "R"
+        board.place(Rook.new('white', piece.x, piece.y), piece.x, piece.y)
+      when "B"
+        board.place(Bishop.new('white', piece.x, piece.y), piece.x, piece.y)
+      when "K"
+        board.place(Knight.new('white', piece.x, piece.y), piece.x, piece.y)
+      end
+    end
+    if piece.type == :pawn && piece.y == 0
+      puts "What piece do you want to promote your pawn to"
+      puts "Q:♛ R:♜ B:♝ K:♞"
+      promotion = gets.chomp.upcase
+      case promotion
+      when "Q"
+        board.place(Queen.new('black', piece.x, piece.y), piece.x, piece.y)
+      when "R"
+        board.place(Rook.new('black', piece.x, piece.y), piece.x, piece.y)
+      when "B"
+        board.place(Bishop.new('black', piece.x, piece.y), piece.x, piece.y)
+      when "K"
+        board.place(Knight.new('black', piece.x, piece.y), piece.x, piece.y)
+      end
+    end
+    if board.game_complete?
+      puts "#{player} wins!"
+      break
+    end
+    sleep(1)
   end
 
 end
