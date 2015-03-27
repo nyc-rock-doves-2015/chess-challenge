@@ -1,6 +1,6 @@
 class View
-  attr_accessor :piece, :location, :color
-  attr_reader :user_input
+  attr_accessor :piece, :location, :color, :user_input
+  # attr_reader :user_input
 
   def initialize
   end
@@ -22,6 +22,10 @@ class View
       puts "Invalid entry."
       start_prompt
     end
+  end
+
+  def goodbye
+    puts "Goodbye."
   end
 
   def to_s(hash)

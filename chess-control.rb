@@ -18,7 +18,7 @@ class Control
   end
 
   def test_runner
-    @view.start_prompt
+    # @view.start_prompt
     # @view.test_prompt
     # place
     # @view.test_prompt
@@ -38,12 +38,16 @@ class Control
 
   def runner
     @view.start_prompt
-    if @user_input.downcase == "y"
+    if @view.user_input.downcase == "y"
+      @model.new_game
+      @view.to_s(@model.board)
+    else
+      @view.goodbye
     end
   end
 
 end
 
 control = Control.new
-control.test_runner
+control.runner
 # p control.model.board
