@@ -82,6 +82,14 @@ class Board
   end
 
   def game_complete?
+    king_count = 0
+    @board.each do |row|
+      row.each do |cell|
+        next if cell == "-"
+        king_count += 1 if cell.type == :king
+      end
+    end
+    return true if king_count == 1
     false
   end
 
