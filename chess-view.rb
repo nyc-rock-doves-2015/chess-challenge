@@ -1,16 +1,27 @@
 class View
   attr_accessor :piece, :location, :color
+  attr_reader :user_input
 
   def initialize
   end
 
-  def prompt_move
+  def test_prompt
     puts "Which piece would you like to place? (King, Queen, Bishop, Knight, Rook, Pawn)"
     @piece = gets.chomp
     puts "Which color? (Black or White)"
     @color = gets.chomp
     puts "Where would you like to place the piece? Use chess notation (i.e. a2, e7..)"
     @location = gets.chomp
+  end
+
+  def start_prompt
+    puts "Do you want to play a game? (y/n)"
+    @user_input = gets.chomp
+    choices = ['y','n']
+    if !choices.include?(@user_input.downcase)
+      puts "Invalid entry."
+      start_prompt
+    end
   end
 
   def to_s(hash)

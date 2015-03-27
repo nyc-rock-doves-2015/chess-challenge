@@ -17,26 +17,33 @@ class Control
     @model.board[location] = Object.const_get(piece).new(color)
   end
 
+  def test_runner
+    @view.start_prompt
+    # @view.test_prompt
+    # place
+    # @view.test_prompt
+    # place
+    # @view.test_prompt
+    # place
+    # @view.test_prompt
+    # place
+    # @view.test_prompt
+    # place
+    # @view.test_prompt
+    # place
+    # @view.test_prompt
+    # place
+    # @view.to_s(@model.board)
+  end
+
   def runner
-    @view.prompt_move
-    place
-    @view.prompt_move
-    place
-    @view.prompt_move
-    place
-    # @view.prompt_move
-    # place
-    # @view.prompt_move
-    # place
-    # @view.prompt_move
-    # place
-    # @view.prompt_move
-    # place
-    @view.to_s(@model.board)
+    @view.start_prompt
+    if @user_input.downcase == "y"
+    end
   end
 
 end
 
 control = Control.new
-control.runner
+control.test_runner
 # p control.model.board
