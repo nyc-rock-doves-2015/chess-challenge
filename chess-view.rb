@@ -1,5 +1,6 @@
 class View
-  attr_accessor :piece, :location, :color, :start_input, :current, :destination
+  attr_accessor :piece, :location, :color, :start_input, :current, :destination, :revival_piece
+
   # attr_reader :start_input
 
   def initialize
@@ -28,17 +29,31 @@ class View
     puts "Invalid entry or move not possible."
   end
 
-  def current_prompt
-    puts "Initial Spot?"
+  def winner!(color)
+    puts "#{color} won!!!"
+  end
+
+  def current_prompt(color)
+    puts "#{color}'s turn."
+    puts "Piece to move? (i.e. A3, D7..)"
     @current = gets.chomp.upcase
   end
   def destination_prompt
-    puts "Destination?"
+    puts "Destination? (i.e. A3, D7..)"
     @destination = gets.chomp.upcase
+  end
+
+  def prompt_promote
+    puts "What piece would you like to promote to? (i.e. Queen, Rook..)"
+    @revival_piece = gets.chomp.capitalize
   end
 
   def goodbye
     puts "Goodbye."
+  end
+
+  def clear!
+    print "\e[H\e[2J"
   end
 
   def to_s(hash)

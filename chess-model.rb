@@ -162,7 +162,11 @@ class Black_sq_bishop
   attr_reader :color, :glyph
   def initialize(color)
     @color = color
-    @glyph = "♝"
+    if @color == 'black'
+      @glyph = "♝"
+    elsif @color == 'white'
+      @glyph = "♗"
+    end
   end
 end
 
@@ -170,8 +174,11 @@ class White_sq_bishop
   attr_reader :color, :glyph
   def initialize(color)
     @color = color
-    @color == color
-    @glyph = "♗"
+    if @color == 'black'
+      @glyph = "♝"
+    elsif @color == 'white'
+      @glyph = "♗"
+    end
   end
 end
 
