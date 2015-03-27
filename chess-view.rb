@@ -44,6 +44,10 @@ class View
     puts "Goodbye."
   end
 
+  def clear!
+    print "\e[H\e[2J"
+  end
+
   def to_s(hash)
     board_array = []
     hash.values.each_slice(8) do |pieces|
