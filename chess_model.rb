@@ -34,7 +34,6 @@ class Board
     @board.transpose.reverse.map do |row|
       board_string << "#{row_number} "
       row.map do |cell|
-        # puts cell
         board_string << "  " if cell == "-"
         board_string << "#{cell.image} " if cell != "-"
       end
@@ -188,7 +187,6 @@ class Board
 
 
   def check_next_spot(piece, direction, x, y, move_count, move_array = [])
-    #direction is a 2 element array [x, y]
     return move_array if move_count == 0
     x_new = x + direction[0]
     y_new = y + direction[1]
@@ -213,7 +211,6 @@ class Board
   end
 
 end
-
 
 class Piece
   attr_accessor :x, :y, :has_moved, :turn
