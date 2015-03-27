@@ -50,32 +50,22 @@ class Control
 
   def check_promote?
     black_promotion = {}
-    p @model.board.each_key do |spot|
-      if spot.include?('1')
+    white_promotion = {}
+    @model.board.each do |spot, piece|
+      if spot.include?('1') && piece.class.name == "Black_pawn"
         black_promotion[spot] = piece
       end
     end
-    # byebug
-    # black_promotion = @model.board.select {|spot, piece| spot[1] == 1}
-    # byebug
-    # white_promotion = @model.board.select {|spot, piece| spot[1] == 8}
-
-    # black_promotion.each do |spot, piece|
-    #   puts piece.class.name
-    #   # if piece.class.name == 'Black_pawn'
-    #   #   p @promotion_spot << spot
-    #   #   return true
-    # end
-
-    # white_promotion.each do |spot, piece|
-    #   puts piece.class.name
-    #   # if piece.class.name == 'White_pawn'
-    #   #   p @promotion_spot << spot
-    #   #   return true
-    #   # end
-    # end
-
-    # return false
+    @model.board.each do |spot, piece|
+      if spot.include?('8') && piece.class.name == "White_pawn"
+        white_promotion[spot] = piece
+      end
+    end
+    if black_promotion.length > 0 || white_promotion.length > 0
+      return true
+    else
+      return false
+    end
   end
 
   def promote
@@ -99,7 +89,11 @@ class Control
     @view.to_s(@model.board)
     @view.test_prompt
     place
-    check_promote?
+    @view.to_s(@model.board)
+    @view.test_prompt
+    place
+
+    p check_promote?
 
   end
 
