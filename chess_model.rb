@@ -15,11 +15,12 @@ class Board
     }
   end
 
-  def place(piece, x, y, has_moved = true)
+  def place(piece, x, y, has_moved = false)
     @board[piece.x][piece.y] = "-"
     @board[x][y] = piece
     piece.x = x
     piece.y = y
+    piece.has_moved = has_moved
   end
 
   def to_s
@@ -110,7 +111,9 @@ class Board
     capture_array = [[pawn.x + 1, pawn.y + y_move], [pawn.x - 1, pawn.y + y_move]]
     capture_array.each do |move|
       x_new, y_new = move
-      if @board[x_new][y_new] == "-"
+      if x_new > 7 || x_new < 0
+        invalid_moves << move
+      elsif @board[x_new][y_new] == "-"
         invalid_moves << move
       elsif @board[x_new][y_new] != "-" && @board[x_new][y_new].color == pawn.color
         invalid_moves << move

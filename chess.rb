@@ -141,7 +141,7 @@ while board.game_complete? == false
       print "#{player}, move #{piece.image} #{piece_position} where? "
       move_position = gets.chomp
     end
-    board.place(piece, board.get_row(move_position), board.get_col(move_position))
+    board.place(piece, board.get_row(move_position), board.get_col(move_position), true)
   end
 
 end
