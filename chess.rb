@@ -140,7 +140,7 @@ while board.game_complete? == false
     puts "moves for #{player} #{piece.image} #{piece_position}: #{board.convert_to_chess_notation(board.filter_moves(piece))}"
     print "#{player}, move #{piece.image} #{piece_position} where? "
     move_position = gets.chomp
-    until board.convert_to_chess_notation(board.filter_moves(piece)).include?(move_position)
+    until board.convert_to_chess_notation(board.filter_moves(piece)).include?(move_position) && move_position != ""
       puts "Please enter valid move"
       print "#{player}, move #{piece.image} #{piece_position} where? "
       move_position = gets.chomp
@@ -148,21 +148,25 @@ while board.game_complete? == false
     if board.get_piece(move_position) != "-"
       puts "#{player} captured #{players[index - 1]}'s #{board.get_piece(move_position).image} at #{move_position}"
     end
-    if piece.type == :king && move_position == "c1"
+    if piece.type == :king && move_position == "c1" && piece.has_moved == false
       board.place(board.board[0][0], 3, 0)
-    elsif piece.type == :king && move_position == "g1"
+    elsif piece.type == :king && move_position == "g1" && piece.has_moved == false
       board.place(board.board[7][0], 5, 0)
-    elsif piece.type == :king && move_position == "c8"
+    elsif piece.type == :king && move_position == "c8" && piece.has_moved == false
       board.place(board.board[0][7], 3, 7)
-    elsif piece.type == :king && move_position == "g8"
+    elsif piece.type == :king && move_position == "g8" && piece.has_moved == false
       board.place(board.board[7][7], 5, 7)
     end
     board.place(piece, board.get_row(move_position), board.get_col(move_position), true)
-    p piece
     if piece.type == :pawn && piece.y == 7
       puts "What piece do you want to promote your pawn to"
       puts "Q:♛ R:♜ B:♝ K:♞"
       promotion = gets.chomp.upcase
+      until promotion == "Q" || promotion == "R" || promotion == "B" || promotion == "K"
+        puts "Choose a valid piece"
+        puts "Q:♛ R:♜ B:♝ K:♞"
+        promotion = gets.chomp.upcase
+      end
       case promotion
       when "Q"
         board.place(Queen.new('white', piece.x, piece.y), piece.x, piece.y)
@@ -174,10 +178,16 @@ while board.game_complete? == false
         board.place(Knight.new('white', piece.x, piece.y), piece.x, piece.y)
       end
     end
+
     if piece.type == :pawn && piece.y == 0
       puts "What piece do you want to promote your pawn to"
-      puts "Q:♛ R:♜ B:♝ K:♞"
+      puts "Q:♕ R:♖ B:♗ K:♘"
       promotion = gets.chomp.upcase
+      until promotion == "Q" || promotion == "R" || promotion == "B" || promotion == "K"
+        puts "Choose a valid piece"
+        puts "Q:♕ R:♖ B:♗ K:♘"
+        promotion = gets.chomp.upcase
+      end
       case promotion
       when "Q"
         board.place(Queen.new('black', piece.x, piece.y), piece.x, piece.y)
