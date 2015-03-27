@@ -207,7 +207,20 @@ class Board
     move_array
   end
 
-  def check?
+  def check?(player, any_board = @board)
+    any_board.each do |row|
+      row.each do |piece|
+        next if piece == "-"
+        next if piece.color == player
+        piece_move_array = filter_moves(piece) #array of arrays
+        piece_move_array.each do |position|
+          position_piece = any_board[position[0]][position[1]]
+          next if position_piece == "-"
+          return true if position_piece.type == :king
+        end
+      end
+    end
+    false
   end
 
 end

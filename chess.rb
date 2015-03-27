@@ -128,6 +128,7 @@ while board.game_complete? == false
     puts board
     board.turn += 1
     puts "#{player}'s turn"
+    puts "You are in check!" if board.check?(player)
     print "#{player}, your move? "
     piece_position = gets.chomp
     until board.validate_piece(player, piece_position) && !board.filter_moves(board.get_piece(piece_position)).empty?
