@@ -90,23 +90,19 @@ end
 
 describe Board do
   let(:board1) {Board.new}
+  pawn2 = board1[6][2]
   describe "initializes" do
     it "initializes with an array of length 8" do
-      expect(board1.list).to be_a List
+      expect(board1.board.length).to eq 8
     end
 
-    # it "initializes with a board display array containing chess character icons" do
-    # end
-
-    # describe "display" do
-    #   it "" do
-    #     expect(board.display).to eq "["
-    #   end
-    # end
+    it "initializes with a board display array containing chess character icons" do
+      expect(board1.display[0]).to eq [" ♜ " , " ♞ ",  " ♝ ", " ♛ ",  " ♚ ",  " ♝ ",  " ♞ ",  " ♜ "]
+    end
 
     # describe "valid_moves" do
     #   it "returns a string beginning with [" do
-    #     expect(piece.valid_moves).to eq "["
+    #     expect(pawn2.valid_moves).to eq "["
     #   end
     # end
 

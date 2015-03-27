@@ -2,7 +2,7 @@
 
 class Board
   BOARDLENGTH = 8
-  attr_reader :board
+  attr_reader :board, :display_board
   def initialize
     @board = Array.new(8) { Array.new(8, nil) }
     @first_row = [Rook.new, Knight.new, Bishop.new, Queen.new, King.new, Bishop.new, Knight.new, Rook.new]
