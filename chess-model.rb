@@ -123,7 +123,7 @@ def move(piece, current, destination)
   # king?
   # friend?
   # BIG_HASH
-    # key: piece type # value: hash
+  # key: piece type # value: hash
   #                             # key: current spot # value: destination
   # if BIG_HASH[piece][current].include?(destination)
   #   if @board[current]
@@ -131,44 +131,74 @@ def move(piece, current, destination)
 end
 
 class King
-  attr_reader :color
+  attr_reader :color, :glyph
   def initialize(color)
     @color = color
+    if @color == "black"
+      @glyph = "♚"
+    elsif @color == 'white'
+      @glyph = "♔"
+    end
   end
 end
 
 class Queen
-  attr_reader :color
+  attr_reader :color, :glyph
   def initialize(color)
     @color = color
+    if @color == "black"
+      @glyph = "♛"
+    else
+      @glyph = "♕"
+    end
   end
 end
 
 class Bishop
-  attr_reader :color
+  attr_reader :color, :glyph
   def initialize(color)
     @color = color
+    if @color == "black"
+      @glyph = "♝"
+    else
+      @glyph = "♗"
+    end
   end
 end
 
 class Knight
-  attr_reader :color
+  attr_reader :color, :glyph
   def initialize(color)
     @color = color
+    if @color == "black"
+      @glyph = "♞"
+    else
+      @glyph = "♘"
+    end
   end
 end
 
 class Rook
-  attr_reader :color
+  attr_reader :color, :glyph
   def initialize(color)
     @color = color
+    if @color == "black"
+      @glyph = "♜"
+    else
+      @glyph = "♖"
+    end
   end
 end
 
 class Pawn
-  attr_reader :color
+  attr_reader :color, :glyph
   def initialize(color)
     @color = color
+    if @color == "black"
+      @glyph = "♟"
+    else
+      @glyph = "♙"
+    end
   end
 end
 

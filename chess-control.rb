@@ -14,16 +14,16 @@ class Control
     location = @view.location.downcase
     color = @view.color.downcase
 
-    @model.board[location] = Object.const_get(piece).new('white')
+    @model.board[location] = Object.const_get(piece).new(color)
   end
 
   def runner
     @view.prompt_move
     place
-    # @view.prompt_move
-    # place
-    # @view.prompt_move
-    # place
+    @view.prompt_move
+    place
+    @view.prompt_move
+    place
     # @view.prompt_move
     # place
     # @view.prompt_move

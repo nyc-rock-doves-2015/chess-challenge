@@ -24,25 +24,15 @@ class View
       if row_num > 0
         print row_num.to_s + "  "
       else
-        print "     "
+        print "    "
       end
       row.each do |piece|
-        if piece.is_a? Rook
-          print "♜"
-        elsif piece.is_a? Knight
-          print "♞"
-        elsif piece.is_a? Bishop
-          print "♝"
-        elsif piece.is_a? Queen
-          print "♛"
-        elsif piece.is_a? King
-          print "♚"
-        elsif piece.is_a? Pawn
-          print "♟"
-        elsif piece == nil
+        if piece == nil
           print "  "
+        elsif piece.is_a? String
+          print piece + " "
         else
-          print piece
+          print piece.glyph + " "
         end
         print "  "
       end
