@@ -43,41 +43,41 @@ board = Board.new
 
 # puts knight1.class
 
-pawn1 = Pawn.new('white', 0, 1)
-pawn2 = Pawn.new('white', 1, 1)
-pawn3 = Pawn.new('white', 2, 1)
-pawn4 = Pawn.new('white', 3, 1)
-pawn5 = Pawn.new('white', 4, 1)
-pawn6 = Pawn.new('white', 5, 1)
-pawn7 = Pawn.new('white', 6, 1)
-pawn8 = Pawn.new('white', 7, 1)
+# pawn1 = Pawn.new('white', 0, 1)
+# pawn2 = Pawn.new('white', 1, 1)
+# pawn3 = Pawn.new('white', 2, 1)
+# pawn4 = Pawn.new('white', 3, 1)
+# pawn5 = Pawn.new('white', 4, 1)
+# pawn6 = Pawn.new('white', 5, 1)
+# pawn7 = Pawn.new('white', 6, 1)
+# pawn8 = Pawn.new('white', 7, 1)
 
-board.place(pawn1, 0, 1)
-board.place(pawn2, 1, 1)
-board.place(pawn3, 2, 1)
-board.place(pawn4, 3, 1)
-board.place(pawn5, 4, 1)
-board.place(pawn6, 5, 1)
-board.place(pawn7, 6, 1)
-board.place(pawn8, 7, 1)
+# board.place(pawn1, 0, 1)
+# board.place(pawn2, 1, 1)
+# board.place(pawn3, 2, 1)
+# board.place(pawn4, 3, 1)
+# board.place(pawn5, 4, 1)
+# board.place(pawn6, 5, 1)
+# board.place(pawn7, 6, 1)
+# board.place(pawn8, 7, 1)
 
-rook1 = Rook.new('white', 0, 0)
-rook2 = Rook.new('white', 7, 0)
-knight1 = Knight.new('white', 1, 0)
-knight2 = Knight.new('white', 6, 0)
-bishop1 = Bishop.new('white', 2, 0)
-bishop2 = Bishop.new('white', 5, 0)
+# rook1 = Rook.new('white', 0, 0)
+# rook2 = Rook.new('white', 7, 0)
+# knight1 = Knight.new('white', 1, 0)
+# knight2 = Knight.new('white', 6, 0)
+# bishop1 = Bishop.new('white', 2, 0)
+# bishop2 = Bishop.new('white', 5, 0)
 king1 = King.new('white', 4, 0)
-queen1 = Queen.new('white', 3, 0)
+# queen1 = Queen.new('white', 3, 0)
 
-board.place(rook1, 0, 0)
-board.place(rook2, 7, 0)
-board.place(knight1, 1, 0)
-board.place(knight2, 6, 0)
-board.place(bishop1, 2, 0)
-board.place(bishop2, 5, 0)
+# board.place(rook1, 0, 0)
+# board.place(rook2, 7, 0)
+# board.place(knight1, 1, 0)
+# board.place(knight2, 6, 0)
+# board.place(bishop1, 2, 0)
+# board.place(bishop2, 5, 0)
 board.place(king1, 4, 0)
-board.place(queen1, 3, 0)
+# board.place(queen1, 3, 0)
 
 pawn11 = Pawn.new('black', 0, 6)
 pawn21 = Pawn.new('black', 1, 6)
@@ -147,17 +147,16 @@ while board.game_complete? == false
     if board.get_piece(move_position) != "-"
       puts "#{player} captured #{players[index - 1]}'s #{board.get_piece(move_position).image} at #{move_position}"
     end
-    if piece.type == :king && move_position == "c1"
+    if piece.type == :king && move_position == "c1" && piece.has_moved == false
       board.place(board.board[0][0], 3, 0)
-    elsif piece.type == :king && move_position == "g1"
+    elsif piece.type == :king && move_position == "g1" && piece.has_moved == false
       board.place(board.board[7][0], 5, 0)
-    elsif piece.type == :king && move_position == "c8"
+    elsif piece.type == :king && move_position == "c8" && piece.has_moved == false
       board.place(board.board[0][7], 3, 7)
-    elsif piece.type == :king && move_position == "g8"
+    elsif piece.type == :king && move_position == "g8" && piece.has_moved == false
       board.place(board.board[7][7], 5, 7)
     end
     board.place(piece, board.get_row(move_position), board.get_col(move_position), true)
-    p piece
     if piece.type == :pawn && piece.y == 7
       puts "What piece do you want to promote your pawn to"
       puts "Q:♛ R:♜ B:♝ K:♞"
