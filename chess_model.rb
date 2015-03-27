@@ -2,6 +2,7 @@ require 'byebug'
 
 class Board
   attr_accessor :turn
+  attr_reader :board
 
   def initialize
     @board = Array.new(8) {["-","-","-","-","-","-","-","-"]}
@@ -154,8 +155,22 @@ class Board
   end
 
   def king_filter_moves(king)
-    king_directions = [[1, 1], [-1, 1], [1, -1], [-1, -1],[1, 0], [-1, 0], [0, 1], [0, -1]]
-    piece_filter_moves(king, king_directions, 1)
+    king_directions = [[1, 1], [-1, 1], [1, -1], [-1, -1], [1, 0], [-1, 0], [0, 1], [0, -1]]
+    pre_filter_moves = piece_filter_moves(king, king_directions, 1)
+    #castling conditions
+    if !king.has_moved && king.color == 'white' && @board[7][0].type == :rook && @board[7][0].has_moved == false && @board[5][0] == "-" && @board[6][0] == "-"
+      pre_filter_moves << [6, 0]
+    end
+    if !king.has_moved && king.color == 'white' && @board[0][0].type == :rook && @board[0][0].has_moved == false && @board[1][0] == "-" && @board[2][0] == "-" && @board[3][0] == "-"
+      pre_filter_moves << [2, 0]
+    end
+    if !king.has_moved && king.color == 'black' && @board[0][7].type == :rook && @board[0][7].has_moved == false && @board[1][7] == "-" && @board[2][7] == "-" && @board[3][7] == "-"
+      pre_filter_moves << [2, 7]
+    end
+    if !king.has_moved && king.color == 'black' && @board[7][7].type == :rook && @board[7][7].has_moved == false && @board[5][7] == "-" && @board[6][7] == "-"
+      pre_filter_moves << [6, 7]
+    end
+    pre_filter_moves
   end
 
   def knight_filter_moves(knight)

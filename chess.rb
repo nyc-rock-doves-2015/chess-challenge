@@ -4,42 +4,42 @@ require_relative "chess_model.rb"
 
 board = Board.new
 
-pawn4 = Pawn.new('black', 1, 6)
-pawn5 = Pawn.new('white', 2, 5)
-pawn6 = Pawn.new('white', 4, 2)
-pawn7 = Pawn.new('black', 4, 3)
-board.place(pawn4, 1, 6)
-board.place(pawn5, 2, 5)
-board.place(pawn6, 4, 2)
-board.place(pawn7, 4, 3)
+# pawn4 = Pawn.new('black', 1, 6)
+# pawn5 = Pawn.new('white', 2, 5)
+# pawn6 = Pawn.new('white', 4, 2)
+# pawn7 = Pawn.new('black', 4, 3)
+# board.place(pawn4, 1, 6)
+# board.place(pawn5, 2, 5)
+# board.place(pawn6, 4, 2)
+# board.place(pawn7, 4, 3)
 
-pawn4.has_moved = true
-pawn5.has_moved = true
+# pawn4.has_moved = true
+# pawn5.has_moved = true
 
-rook1 = Rook.new('white', 4, 0)
-rook2 = Rook.new('black', 2, 7)
-board.place(rook1, 4, 0)
-board.place(rook2, 2, 7)
+# rook1 = Rook.new('white', 4, 0)
+# rook2 = Rook.new('black', 2, 7)
+# board.place(rook1, 4, 0)
+# board.place(rook2, 2, 7)
 
-bishop1 = Bishop.new('white', 0, 5)
-bishop2 = Bishop.new('black', 3, 2)
-board.place(bishop1, 0, 5)
-board.place(bishop2, 3, 2)
+# bishop1 = Bishop.new('white', 0, 5)
+# bishop2 = Bishop.new('black', 3, 2)
+# board.place(bishop1, 0, 5)
+# board.place(bishop2, 3, 2)
 
-queen1 = Queen.new('white', 4, 5)
-queen2 = Queen.new('black', 1, 4)
-board.place(queen1, 4, 5)
-board.place(queen2, 1, 4)
+# queen1 = Queen.new('white', 4, 5)
+# queen2 = Queen.new('black', 1, 4)
+# board.place(queen1, 4, 5)
+# board.place(queen2, 1, 4)
 
-king1 = King.new('white', 3, 1)
-king2 = King.new('black', 1, 5)
-board.place(king1, 3, 1)
-board.place(king2, 1, 5)
+# king1 = King.new('white', 3, 1)
+# king2 = King.new('black', 1, 5)
+# board.place(king1, 3, 1)
+# board.place(king2, 1, 5)
 
-knight1 = Knight.new('white', 6, 4)
-knight2 = Knight.new('black', 5, 7)
-board.place(knight1, 6, 4)
-board.place(knight2, 5, 7)
+# knight1 = Knight.new('white', 6, 4)
+# knight2 = Knight.new('black', 5, 7)
+# board.place(knight1, 6, 4)
+# board.place(knight2, 5, 7)
 
 # puts knight1.class
 
@@ -61,22 +61,22 @@ board.place(knight2, 5, 7)
 # board.place(pawn7, 6, 1)
 # board.place(pawn8, 7, 1)
 
-# rook1 = Rook.new('white', 0, 0)
-# rook2 = Rook.new('white', 7, 0)
+rook1 = Rook.new('white', 0, 0)
+rook2 = Rook.new('white', 7, 0)
 # knight1 = Knight.new('white', 1, 0)
 # knight2 = Knight.new('white', 6, 0)
 # bishop1 = Bishop.new('white', 2, 0)
 # bishop2 = Bishop.new('white', 5, 0)
-# king1 = King.new('white', 4, 0)
+king1 = King.new('white', 4, 0)
 # queen1 = Queen.new('white', 3, 0)
 
-# board.place(rook1, 0, 0)
-# board.place(rook2, 7, 0)
+board.place(rook1, 0, 0)
+board.place(rook2, 7, 0)
 # board.place(knight1, 1, 0)
 # board.place(knight2, 6, 0)
 # board.place(bishop1, 2, 0)
 # board.place(bishop2, 5, 0)
-# board.place(king1, 4, 0)
+board.place(king1, 4, 0)
 # board.place(queen1, 3, 0)
 
 # pawn11 = Pawn.new('black', 0, 6)
@@ -97,22 +97,22 @@ board.place(knight2, 5, 7)
 # board.place(pawn71, 6, 6)
 # board.place(pawn81, 7, 6)
 
-# rook11 = Rook.new('black', 0, 7)
-# rook21 = Rook.new('black', 7, 7)
+rook11 = Rook.new('black', 0, 7)
+rook21 = Rook.new('black', 7, 7)
 # knight11 = Knight.new('black', 1, 7)
 # knight21 = Knight.new('black', 6, 7)
 # bishop11 = Bishop.new('black', 2, 7)
 # bishop21 = Bishop.new('black', 5, 7)
-# king11 = King.new('black', 4, 7)
+king11 = King.new('black', 4, 7)
 # queen11 = Queen.new('black', 3, 7)
 
-# board.place(rook11, 0, 7)
-# board.place(rook21, 7, 7)
+board.place(rook11, 0, 7)
+board.place(rook21, 7, 7)
 # board.place(knight11, 1, 7)
 # board.place(knight21, 6, 7)
 # board.place(bishop11, 2, 7)
 # board.place(bishop21, 5, 7)
-# board.place(king11, 4, 7)
+board.place(king11, 4, 7)
 # board.place(queen11, 3, 7)
 
 def clear_screen
@@ -147,7 +147,17 @@ while board.game_complete? == false
     if board.get_piece(move_position) != "-"
       puts "#{player} captured #{players[index - 1]}'s #{board.get_piece(move_position).image} at #{move_position}"
     end
+    if piece.type == :king && move_position == "c1"
+      board.place(board.board[0][0], 3, 0)
+    elsif piece.type == :king && move_position == "g1"
+      board.place(board.board[7][0], 5, 0)
+    elsif piece.type == :king && move_position == "c8"
+      board.place(board.board[0][7], 3, 7)
+    elsif piece.type == :king && move_position == "g8"
+      board.place(board.board[7][7], 5, 7)
+    end
     board.place(piece, board.get_row(move_position), board.get_col(move_position), true)
+    # p piece
     if board.game_complete?
       puts "#{player} wins!"
       break
