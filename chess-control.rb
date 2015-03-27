@@ -63,12 +63,8 @@ class Control
     return current_valid && destination_valid
   end
 
-  #knight, rook, queen, king
-  #white_pawn, black_pawn
-  #white_sq_bishop, black_sq_bishop
-
-  def ask_move
-    @view.current_prompt
+  def ask_move(color)
+    @view.current_prompt(color)
     @view.destination_prompt
     if !valid?(@view.current, @view.destination)
       ask_move
@@ -77,17 +73,21 @@ class Control
 
   def runner
     @view.start_prompt
-    if @view.start_input.downcase == "y"
+    if @view.start_input.downcase == "n"
+      @view.goodbye
+    else
       @model.new_game
       @view.to_s(@model.board)
 
-      ask_move
+      loop do
+        ask_move("white")
+        @model.move_piece(@view.current, @view.destination)
+        @view.to_s(@model.board)
 
-      @model.move_piece(@view.current, @view.destination)
-
-      @view.to_s(@model.board)
-    else
-      @view.goodbye
+        ask_move("black")
+        @model.move_piece(@view.current, @view.destination)
+        @view.to_s(@model.board)
+      end
     end
   end
 

@@ -14,6 +14,8 @@ class View
     @location = gets.chomp
   end
 
+
+
   def start_prompt
     puts "Do you want to play a game? (y/n)"
     @start_input = gets.chomp
@@ -28,7 +30,8 @@ class View
     puts "Invalid entry or move not possible."
   end
 
-  def current_prompt
+  def current_prompt(color)
+    puts "#{color}'s turn."
     puts "Initial Spot?"
     @current = gets.chomp.upcase
   end
