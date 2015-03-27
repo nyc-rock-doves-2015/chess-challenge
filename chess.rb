@@ -3,71 +3,115 @@ require_relative "chess_model.rb"
 # class Game
 
 board = Board.new
-# pawn1 = Pawn.new('white', 3, 4)
-# pawn2 = Pawn.new('white', 3, 5)
-# pawn3 = Pawn.new('black', 4, 5)
-# board.place(pawn1, 3, 4)
-# board.place(pawn2, 3, 5)
-# board.place(pawn3, 4, 5)
 
-pawn4 = Pawn.new('black', 1, 6)
-pawn5 = Pawn.new('white', 2, 5)
-pawn6 = Pawn.new('white', 4, 2)
-pawn7 = Pawn.new('black', 4, 3)
-board.place(pawn4, 1, 6)
-board.place(pawn5, 2, 5)
-board.place(pawn6, 4, 2)
-board.place(pawn7, 4, 3)
+# pawn4 = Pawn.new('black', 1, 6)
+# pawn5 = Pawn.new('white', 2, 5)
+# pawn6 = Pawn.new('white', 4, 2)
+# pawn7 = Pawn.new('black', 4, 3)
+# board.place(pawn4, 1, 6)
+# board.place(pawn5, 2, 5)
+# board.place(pawn6, 4, 2)
+# board.place(pawn7, 4, 3)
 
-pawn4.has_moved = true
-pawn5.has_moved = true
+# pawn4.has_moved = true
+# pawn5.has_moved = true
 
-# puts "pawn5"
-# p board.filter_moves(pawn5.possible_moves, pawn5)
+# rook1 = Rook.new('white', 4, 0)
+# rook2 = Rook.new('black', 2, 7)
+# board.place(rook1, 4, 0)
+# board.place(rook2, 2, 7)
 
-rook1 = Rook.new('white', 4, 0)
-rook2 = Rook.new('black', 2, 7)
-board.place(rook1, 4, 0)
-board.place(rook2, 2, 7)
+# bishop1 = Bishop.new('white', 0, 5)
+# bishop2 = Bishop.new('black', 3, 2)
+# board.place(bishop1, 0, 5)
+# board.place(bishop2, 3, 2)
 
-# p board.filter_moves(rook1)
-# p board.filter_moves(rook2)
-# board.place(rook2, 2, 5)
+# queen1 = Queen.new('white', 4, 5)
+# queen2 = Queen.new('black', 1, 4)
+# board.place(queen1, 4, 5)
+# board.place(queen2, 1, 4)
 
-bishop1 = Bishop.new('white', 0, 5)
-bishop2 = Bishop.new('black', 3, 2)
-board.place(bishop1, 0, 5)
-board.place(bishop2, 3, 2)
-# p board.filter_moves(bishop1)
-# p board.filter_moves(bishop2)
+# king1 = King.new('white', 3, 1)
+# king2 = King.new('black', 1, 5)
+# board.place(king1, 3, 1)
+# board.place(king2, 1, 5)
 
+# knight1 = Knight.new('white', 6, 4)
+# knight2 = Knight.new('black', 5, 7)
+# board.place(knight1, 6, 4)
+# board.place(knight2, 5, 7)
 
-queen1 = Queen.new('white', 4, 5)
-queen2 = Queen.new('black', 1, 4)
-board.place(queen1, 4, 5)
-board.place(queen2, 1, 4)
-# p board.filter_moves(queen1)
-# p board.filter_moves(queen2)
+pawn1 = Pawn.new('white', 0, 1)
+pawn2 = Pawn.new('white', 1, 1)
+pawn3 = Pawn.new('white', 2, 1)
+pawn4 = Pawn.new('white', 3, 1)
+pawn5 = Pawn.new('white', 4, 1)
+pawn6 = Pawn.new('white', 5, 1)
+pawn7 = Pawn.new('white', 6, 1)
+pawn8 = Pawn.new('white', 7, 1)
 
-king1 = King.new('white', 3, 1)
-king2 = King.new('black', 1, 5)
-board.place(king1, 3, 1)
-board.place(king2, 1, 5)
-# p board.filter_moves(king1)
-# p board.filter_moves(king2)
+board.place(pawn1, 0, 1)
+board.place(pawn2, 1, 1)
+board.place(pawn3, 2, 1)
+board.place(pawn4, 3, 1)
+board.place(pawn5, 4, 1)
+board.place(pawn6, 5, 1)
+board.place(pawn7, 6, 1)
+board.place(pawn8, 7, 1)
 
-knight1 = Knight.new('white', 6, 4)
-knight2 = Knight.new('black', 5, 7)
-board.place(knight1, 6, 4)
-board.place(knight2, 5, 7)
-# p board.filter_moves(knight1)
-# p board.filter_moves(knight2)
+rook1 = Rook.new('white', 0, 0)
+rook2 = Rook.new('white', 7, 0)
+knight1 = Knight.new('white', 1, 0)
+knight2 = Knight.new('white', 6, 0)
+bishop1 = Bishop.new('white', 2, 0)
+bishop2 = Bishop.new('white', 5, 0)
+king1 = King.new('white', 4, 0)
+queen1 = Queen.new('white', 3, 0)
 
-# print rook1.image
-# print rook2.image
+board.place(rook1, 0, 0)
+board.place(rook2, 7, 0)
+board.place(knight1, 1, 0)
+board.place(knight2, 6, 0)
+board.place(bishop1, 2, 0)
+board.place(bishop2, 5, 0)
+board.place(king1, 4, 0)
+board.place(queen1, 3, 0)
 
-# p board
-# puts board.to_s
+pawn11 = Pawn.new('black', 0, 6)
+pawn21 = Pawn.new('black', 1, 6)
+pawn31 = Pawn.new('black', 2, 6)
+pawn41 = Pawn.new('black', 3, 6)
+pawn51 = Pawn.new('black', 4, 6)
+pawn61 = Pawn.new('black', 5, 6)
+pawn71 = Pawn.new('black', 6, 6)
+pawn81 = Pawn.new('black', 7, 6)
+
+board.place(pawn11, 0, 6)
+board.place(pawn21, 1, 6)
+board.place(pawn31, 2, 6)
+board.place(pawn41, 3, 6)
+board.place(pawn51, 4, 6)
+board.place(pawn61, 5, 6)
+board.place(pawn71, 6, 6)
+board.place(pawn81, 7, 6)
+
+rook11 = Rook.new('black', 0, 7)
+rook21 = Rook.new('black', 7, 7)
+knight11 = Knight.new('black', 1, 7)
+knight21 = Knight.new('black', 6, 7)
+bishop11 = Bishop.new('black', 2, 7)
+bishop21 = Bishop.new('black', 5, 7)
+king11 = King.new('black', 4, 7)
+queen11 = Queen.new('black', 3, 7)
+
+board.place(rook11, 0, 7)
+board.place(rook21, 7, 7)
+board.place(knight11, 1, 7)
+board.place(knight21, 6, 7)
+board.place(bishop11, 2, 7)
+board.place(bishop21, 5, 7)
+board.place(king11, 4, 7)
+board.place(queen11, 3, 7)
 
 def clear_screen
   print "\e[2J\e[H"
@@ -97,7 +141,7 @@ while board.game_complete? == false
       print "#{player}, move #{piece.image} #{piece_position} where? "
       move_position = gets.chomp
     end
-    board.place(piece, board.get_row(move_position), board.get_col(move_position))
+    board.place(piece, board.get_row(move_position), board.get_col(move_position), true)
   end
 
 end

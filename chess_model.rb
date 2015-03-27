@@ -15,11 +15,12 @@ class Board
     }
   end
 
-  def place(piece, x ,y, has_moved=true)
+  def place(piece, x, y, has_moved = false)
     @board[piece.x][piece.y] = "-"
     @board[x][y] = piece
     piece.x = x
     piece.y = y
+    piece.has_moved = has_moved
   end
 
   def to_s
@@ -50,9 +51,7 @@ class Board
   end
 
   def validate_piece(player, piece_position)
-    piece_coord = piece_position.split('')
-    row = @board_map[piece_coord[0]].to_i
-    col = piece_coord[1].to_i - 1
+    row, col = split_coordinates(piece_position)
     if @board[row][col] != "-"
       return @board[row][col].color == player
     else
@@ -61,10 +60,15 @@ class Board
   end
 
   def get_piece(piece_position)
+    row, col = split_coordinates(piece_position)
+    @board[row][col]
+  end
+
+  def split_coordinates(piece_position)
     piece_coord = piece_position.split('')
     row = @board_map[piece_coord[0]].to_i
     col = piece_coord[1].to_i - 1
-    @board[row][col]
+    [row, col]
   end
 
   def get_row(position)
@@ -98,73 +102,56 @@ class Board
   end
 
   def pawn_filter_moves(pawn)
-    bad_moves = []
-    if pawn.color == 'white'
-      direction = [0, 1]
-    else
-      direction = [0, -1]
-    end
-    pawn.has_moved ? (move_count = 1) : (move_count = 2)
-    filtered_moves = check_next_spot(pawn, direction, pawn.x, pawn.y, move_count)
-
-
+    invalid_moves = []
     pawn.color == 'white' ? (y_move = 1) : (y_move = -1)
-    moves_array = [[pawn.x + 1, pawn.y + y_move], [pawn.x - 1, pawn.y + y_move]]
-    moves_array.map do |move|
-      x_new = move[0]
-      y_new = move[1]
-      if @board[x_new][y_new] != "-" &&  x_new == pawn.x
-        bad_moves << move
-      elsif @board[x_new][y_new] == "-" && x_new != pawn.x
-        bad_moves << move
-      elsif @board[x_new][y_new] != "-" && x_new != pawn.x && @board[x_new][y_new].color == pawn.color
-        bad_moves << move
+    direction = [0, y_move]
+    pawn.has_moved ? (pawn_move_count = 1) : (pawn_move_count = 2)
+    filtered_moves = check_next_spot(pawn, direction, pawn.x, pawn.y, pawn_move_count)
+    #capture_array is calculating if the diagonal moves are valid
+    capture_array = [[pawn.x + 1, pawn.y + y_move], [pawn.x - 1, pawn.y + y_move]]
+    capture_array.each do |move|
+      x_new, y_new = move
+      if x_new > 7 || x_new < 0
+        invalid_moves << move
+      elsif @board[x_new][y_new] == "-"
+        invalid_moves << move
+      elsif @board[x_new][y_new] != "-" && @board[x_new][y_new].color == pawn.color
+        invalid_moves << move
       end
     end
-    filtered_attacks = moves_array - bad_moves
+    filtered_attacks = capture_array - invalid_moves
     filtered_moves + filtered_attacks
   end
 
   def rook_filter_moves(rook)
-    filtered_moves = []
     rook_directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
-    rook_directions.each do |direction|
-      filtered_moves += check_next_spot(rook, direction, rook.x, rook.y, 8)
-    end
-    filtered_moves
+    piece_filter_moves(rook, rook_directions, 8)
   end
 
   def bishop_filter_moves(bishop)
-    filtered_moves = []
     bishop_directions = [[1, 1], [-1, 1], [1, -1], [-1, -1]]
-    bishop_directions.each do |direction|
-      filtered_moves += check_next_spot(bishop, direction, bishop.x, bishop.y, 8)
-    end
-    filtered_moves
+    piece_filter_moves(bishop, bishop_directions, 8)
   end
+
   def queen_filter_moves(queen)
-    filtered_moves = []
     queen_directions = [[1, 1], [-1, 1], [1, -1], [-1, -1],[1, 0], [-1, 0], [0, 1], [0, -1]]
-    queen_directions.each do |direction|
-      filtered_moves += check_next_spot(queen, direction, queen.x, queen.y, 8)
-    end
-    filtered_moves
+    piece_filter_moves(queen, queen_directions, 8)
   end
 
   def king_filter_moves(king)
-    filtered_moves = []
     king_directions = [[1, 1], [-1, 1], [1, -1], [-1, -1],[1, 0], [-1, 0], [0, 1], [0, -1]]
-    king_directions.each do |direction|
-      filtered_moves += check_next_spot(king, direction, king.x, king.y, 1)
-    end
-    filtered_moves
+    piece_filter_moves(king, king_directions, 1)
   end
 
   def knight_filter_moves(knight)
-    filtered_moves = []
     knight_directions = [[1, 2], [1, -2], [2, 1], [-2, 1], [-1, -2], [-1, 2], [-2, -1], [2, -1]]
-    knight_directions.each do |direction|
-      filtered_moves += check_next_spot(knight, direction, knight.x, knight.y, 1)
+    piece_filter_moves(knight, knight_directions, 1)
+  end
+
+  def piece_filter_moves(piece, directions, piece_move_count)
+    filtered_moves = []
+    directions.each do |direction|
+      filtered_moves += check_next_spot(piece, direction, piece.x, piece.y, piece_move_count)
     end
     filtered_moves
   end
@@ -201,12 +188,14 @@ end
 class Piece
   attr_accessor :x, :y, :has_moved
   attr_reader :color
+
   def initialize(color, x, y)
     @color = color
     @x = x
     @y = y
     @has_moved = false
   end
+
 end
 
 class Pawn < Piece
@@ -217,11 +206,6 @@ class Pawn < Piece
 
   def type
     :pawn
-  end
-
-  def possible_moves
-    @color == 'white' ? (y_move = 1) : (y_move = -1)
-    [[x+1, y + y_move], [x-1, y + y_move]]
   end
 
 end
@@ -281,7 +265,5 @@ class Knight < Piece
     :knight
   end
 end
-
-
 
 
