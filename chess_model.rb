@@ -102,29 +102,22 @@ class Board
 
   def pawn_filter_moves(pawn)
     bad_moves = []
-    if pawn.color == 'white'
-      direction = [0, 1]
-    else
-      direction = [0, -1]
-    end
+    pawn.color == 'white' ? (y_move = 1) : (y_move = -1)
+    direction = [0, y_move]
     pawn.has_moved ? (move_count = 1) : (move_count = 2)
     filtered_moves = check_next_spot(pawn, direction, pawn.x, pawn.y, move_count)
-
-
-    pawn.color == 'white' ? (y_move = 1) : (y_move = -1)
-    moves_array = [[pawn.x + 1, pawn.y + y_move], [pawn.x - 1, pawn.y + y_move]]
-    moves_array.map do |move|
+    #capture_array is calculating if the diagonal moves are valid
+    capture_array = [[pawn.x + 1, pawn.y + y_move], [pawn.x - 1, pawn.y + y_move]]
+    capture_array.each do |move|
       x_new = move[0]
       y_new = move[1]
-      if @board[x_new][y_new] != "-" &&  x_new == pawn.x
+      if @board[x_new][y_new] == "-"
         bad_moves << move
-      elsif @board[x_new][y_new] == "-" && x_new != pawn.x
-        bad_moves << move
-      elsif @board[x_new][y_new] != "-" && x_new != pawn.x && @board[x_new][y_new].color == pawn.color
+      elsif @board[x_new][y_new] != "-" && @board[x_new][y_new].color == pawn.color
         bad_moves << move
       end
     end
-    filtered_attacks = moves_array - bad_moves
+    filtered_attacks = capture_array - bad_moves
     filtered_moves + filtered_attacks
   end
 
@@ -222,11 +215,6 @@ class Pawn < Piece
 
   def type
     :pawn
-  end
-
-  def possible_moves
-    @color == 'white' ? (y_move = 1) : (y_move = -1)
-    [[x+1, y + y_move], [x-1, y + y_move]]
   end
 
 end
