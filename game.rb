@@ -29,13 +29,14 @@ def turns(player)
   view.piece_chosen_message(player, name, moves)
   view.display_valid_moves(player, location, move) #prompts move
   view.pick_move
-  view.player_move_message(player, piece, move)
+  view.player_move(player, piece, move)
+  # piece.move
 
 
 
 
   def display_board
-
+      board.display_board
 
   end
 end
@@ -82,17 +83,14 @@ class View
     "#{player}, which piece do you want to move? ex: a5, e8"
   end
 
-  def piece_chosen_message(player, piece, moves)
-    "moves for #{player} #{piece}" + moves.join(" ")
+  def piece_chosen_message(player, piece, choice, boarmoves)
+    "moves for #{player} #{piece} #{choice}:" + moves.join(" ")
   end
   # @move gets sent to board
 
-   def player_choose_move_message(player, location, move)
-    "ok, #{player}, move #{location} where?"
-    user_input
-  end
+
   def player_move_message(player, piece, move)
-    "ok, #{player}'s #{piece} #{choice} #{location}to move to #{move}"
+    "ok, #{player}'s #{piece} #{choice} to move to #{move}"
   end
 
 

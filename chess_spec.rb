@@ -1,89 +1,89 @@
 require_relative 'game'
 require_relative 'Board'
 
-describe Gamel do
-  let(:game1) {Gamel.new}
+describe Game do
+  let(:game1) {Game.new}
 
   describe "initialize" do
-    it "contains attribute tasks which returns an array of Task Objects" do
-      expect(game1.tasks).to be_a Array
-      expect(game1.tasks[0]).to be_a Task
+    it "initializes a Board clas" do
+      expect(game1.board).to be_a Board
+
+    end
+      it "initializes a View clas" do
+      expect(game1.view).to be_a View
+
     end
   end
 
-  describe "play" do
-    let(:task1) {"Bake Cake"}
-    it "adds a task to the tasks array" do
-      game1.add(task1)
-      expect{game1.tasks[-1].description}.to eq
-      "Bake Cake"
-    end
-  end
+  # describe "play" do
+  #   it "plays a game until game over" do
+  #     expect{game1.play}.to eq
+  #     game_over
+  #   end
+  # end
 
   describe "turns" do
-
-    let(:task2) {"Eat Cake"}
-    game1.add(task2)
-    it "takes an argument of the player's color" do
-      game1.delete(14)
-      expect{game1.tasks[13]}.to be nil
+       it "expects 1 argument" do
+      expect(Game.instance_method(:turns).arity).to eq 1
     end
   end
 
   describe "display_board" do
-    let(:game1) {List.new}
-    let(:task1) {"Bake Cake"}
-    it "marks an X for a completed task" do
-      game1.complete(task1)
-      expect(game1.task1.to_s[1]).to eq "X"
+    it "displays the board of chess icons" do
+      expect(game1.display_board[0][0]).to eq " ♜ "
     end
   end
 end
 
 
 describe View do
-  let(:arg) {"Bake Cake"}
-  let(:task1) {View.new(arg)}
-
+  let(:view1) {View.new}
+  player="white"
+  piece = "piece"
+  moves = "a3"
+  move = "a2"
+  choice = "a2"
+  player2 = "black"
+  captured_piece = "rook"
   describe "turn_message" do
-    it "initializes with one argument" do
-      expect(task1.method(:initialize).arity).to eq 1
+    it "give's the player's turn message" do
+      expect(view1.player_turn_message(player)).to eq "white's turn"
     end
   end
 
   describe "choose_piece" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
+    it "give's the player's choose piece message" do
+      expect(view1.choose_piece_message(player)).to eq  "white, which piece do you want to move? ex: a5, e8"
     end
   end
 
-  describe "display_valid_moves" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
+  describe "piece_chosen_message" do
+    it "give's the player's valid moves based on the move piece they chose" do
+      expect(view1.piece_chosen_message(player,piece,choice, moves)).to eq "moves for white's pawn a2: a3 "
     end
   end
 
   describe "pick_move" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
+    it "returns the pick move prompt" do
+      expect(view1.pick_move(player,choice)).to eq "white, move a2 where?"
     end
   end
 
-  describe "pick_again" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
-    end
-  end
+  # describe "pick_again" do
+  #   it "returns the pick again prompt" do
+  #     expect(view1.pick_again).to eq ??
+  #   end
+  # end
 
   describe "display_player_move" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
+    it "displays the player's chosen move" do
+      expect(view1.player_move_message(player,piece,move)).to eq  "ok, white's pawn a2 to move to a3 "
     end
   end
 
   describe "display_capture_move" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
+    it "displays the capture message" do
+      expect(view1.capture_message(player,player2,piece,captured_piece,choice)).to eq "white's pawn a2 captures black's rook a3"
     end
   end
 end
@@ -95,112 +95,117 @@ describe Board do
       expect(board1.list).to be_a List
     end
 
-    it "initializes with a board display array containing chess character icons" do
+    # it "initializes with a board display array containing chess character icons" do
+    # end
+
+    # describe "display" do
+    #   it "" do
+    #     expect(board.display).to eq "["
+    #   end
+    # end
+
+    # describe "valid_moves" do
+    #   it "returns a string beginning with [" do
+    #     expect(piece.valid_moves).to eq "["
+    #   end
+    # end
+
+    # describe "recursive_move_check" do
+    #   it "returns a string beginning with [" do
+    #     expect(board.recursive_check(piece)).to eq "["
+    #   end
+    # end
+
+    # describe "free_space?" do
+    #   it "returns a string beginning with [" do
+    #     expect(task1.to_s[0]).to eq "["
+    #   end
+    # end
+
+    # describe "move_one" do
+    #   it "returns a string beginning with [" do
+    #     expect(task1.to_s[0]).to eq "["
+    #   end
+    # end
+
+    # describe "out_of_bounds?" do
+    #   it "returns a string beginning with [" do
+    #     expect(task1.to_s[0]).to eq "["
+    #   end
+    # end
+
+    # describe "find_piece" do
+    #   it "returns a string beginning with [" do
+    #     expect(task1.to_s[0]).to eq "["
+    #   end
+    # end
+
+    # describe "string_to_index" do
+    #   it "returns a string beginning with [" do
+    #     expect(task1.to_s[0]).to eq "["
+    #   end
+    # end
   end
 
-  describe "display" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
+  describe Piece do
+    let(:piece1){Piece.new}
+    describe "all adjacent" do
+      it "has an attribute which returns an array of all 8 vector directions" do
+        expect(piece.all_adjacent).to eq [[0, 1],[0, -1],[1,0],[-1,0],[1,1],[-1,1],[1,-1],[-1,-1]]
+      end
     end
   end
 
-   describe "valid_moves" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
+  describe Pawn do
+    let(:pawn1){Pawn.new}
+    describe "moves" do
+      it "has a moves attribute of the basic move up 1" do
+        expect(pawn1.moves).to eq [[0,1]]
+      end
+      describe "capturing?"
+      it "adds the up 1 over 1 diagonal move for a pawn when capturing"
+      pawn1.capturing? = true
+      expect(pawn1.moves).to eq [[0,1],[1,1]]
     end
   end
 
-   describe "recursive_move_check" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
+  describe Rook do
+    let(:rook1){Rook.new}
+    describe "name" do
+      it "has the name attribute 'rook'" do
+        expect(rook1.name]).to eq "rook"
+      end
     end
   end
 
-   describe "free_space?" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
+  describe Bishop do
+    let(:bishop1){Bishop.new}
+    describe "icon" do
+      it "has the icon attribute ♝" do
+        expect(bishop1.icon]).to eq "♝"
+      end
     end
   end
 
-   describe "move_one" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
+  desribe Queen do
+     let(:queen1){Queen.new}
+    describe "color" do
+      it "has the color attribute white upon initializing" do
+        expect(queen1.color).to eq "white"
+      end
     end
   end
 
-   describe "out_of_bounds?" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
+  describe King do
+    let(:board5){Board.new}
+     let(:king1){King.new}
+    describe "location" do
+      it "has the location attribute [0,4] upon initializing a board" do
+        expect(king1.location]).to eq [0,4]
+      end
     end
   end
 
-   describe "find_piece" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
-    end
+  describe Knight do
+
   end
-
-   describe "string_to_index" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
-    end
-  end
-end
-
-describe Piece do
-
-   describe "color" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
-    end
-  end
-
-  describe "moves" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
-    end
-  end
-
-  describe "location" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
-    end
-  end
-
-  describe "name" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
-    end
-  end
-end
-
-describe Pawn do
-  describe "moves" do
-    it "returns a string beginning with [" do
-      expect(task1.to_s[0]).to eq "["
-    end
-    describe "capturing?"
-    it "returns true if it is moving up 1 column and up 1 row"
-  end
-end
-
-describe Rook do
-     describe "name" do
-    it "returns a string beginning with [" do
-      expect(rook1.name]).to eq "rook"
-    end
-  end
-end
-
-describe Bishop do
-end
-
-desribe Queen do
-end
-
-describe King do
-end
-
-describe Knight do
-
-end

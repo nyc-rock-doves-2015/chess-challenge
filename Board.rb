@@ -118,7 +118,7 @@ b.display
 
 class Piece
   attr_accessor :color, :moves, :location, :name
-  attr_reader :display
+  attr_reader :display, :all_adjacent
   def initialize(color = "white")
     @color = color
     @moves = moves
