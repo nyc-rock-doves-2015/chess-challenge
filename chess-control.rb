@@ -78,6 +78,7 @@ class Control
       @view.goodbye
     else
       @model.new_game
+      @view.clear!
       @view.to_s(@model.board)
 
       loop do
