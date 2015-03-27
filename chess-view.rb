@@ -30,6 +30,10 @@ class View
     puts "Invalid entry or move not possible."
   end
 
+  def winner!(color)
+    puts "#{color} won!!!"
+  end
+
   def current_prompt(color)
     puts "#{color}'s turn."
     puts "Piece to move? (i.e. A3, D7..)"

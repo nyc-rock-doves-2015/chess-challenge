@@ -19,22 +19,28 @@ class Control
   end
 
   def test_runner
-    # @view.start_prompt
-    # @view.test_prompt
-    # place
-    # @view.test_prompt
-    # place
-    # @view.test_prompt
-    # place
-    # @view.test_prompt
-    # place
-    # @view.test_prompt
-    # place
-    # @view.test_prompt
-    # place
-    # @view.test_prompt
-    # place
-    # @view.to_s(@model.board)
+   @view.start_prompt
+    if @view.start_input.downcase == "n"
+      @view.goodbye
+    else
+      @model.new_game
+      @view.clear!
+      @view.to_s(@model.board)
+
+      loop do
+        ask_move("WHITE")
+        @model.move_piece(@view.current, @view.destination)
+        @view.clear!
+        @view.to_s(@model.board)
+        break if finished?
+
+        ask_move("BLACK")
+        @model.move_piece(@view.current, @view.destination)
+        @view.clear!
+        @view.to_s(@model.board)
+        break if finished?
+      end
+    end
   end
 
   def valid?(current, destination)
@@ -72,6 +78,10 @@ class Control
     end
   end
 
+  def finished?
+    @model.board.values.count {|piece| piece.class.name == 'King'} == 1
+  end
+
   def runner
     @view.start_prompt
     if @view.start_input.downcase == "n"
@@ -86,11 +96,19 @@ class Control
         @model.move_piece(@view.current, @view.destination)
         @view.clear!
         @view.to_s(@model.board)
+        if finished?
+          @view.winner!("WHITE")
+          break
+        end
 
         ask_move("BLACK")
         @model.move_piece(@view.current, @view.destination)
         @view.clear!
         @view.to_s(@model.board)
+        if finished?
+          @view.winner!("BLACK")
+          break
+        end
       end
     end
   end
@@ -99,4 +117,4 @@ end
 
 control = Control.new
 control.runner
-# p control.model.board
+# control.test_runner
