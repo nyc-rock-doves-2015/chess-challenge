@@ -59,6 +59,7 @@ class Control
           destination_valid = true
         end
       end
+    else destination_valid = false
     end
     return current_valid && destination_valid
   end
@@ -67,7 +68,7 @@ class Control
     @view.current_prompt(color)
     @view.destination_prompt
     if !valid?(@view.current, @view.destination)
-      ask_move
+      ask_move(color)
     end
   end
 
