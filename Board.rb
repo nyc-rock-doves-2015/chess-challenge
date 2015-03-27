@@ -10,8 +10,7 @@ class Board
     @board[0], @board[7] = @first_row, @first_row.reverse.map! { |piece| piece.color = "black"}
     @board[1], @board[6] = @second_row, @second_row.map! { |piece| piece.color = "black"}
 
-    @board = [[" ♜ " , " ♞ ",  " ♝ ", " ♛ ",  " ♚ ",  " ♝ ",  " ♞ ",  " ♜ "], [ " ♟ ",  " ♟ ",  " ♟ ",  " ♟ ",  " ♟ ",  " ♟ ",  " ♟ ", " ♟ "], [nil, " ♙ ",nil,nil,nil,nil,nil,nil], [nil,nil,nil,nil,nil, " ♙ ",nil,nil], [nil,nil,nil,nil,nil,nil,nil,nil],[" ♙ ",  " ♙ ",  " ♙ ", " ♙ ",  " ♙ ",nil ,  " ♙ "], [" ♖ ",  " ♘ ",  " ♗ ",  " ♕ ",  " ♔ ", " ♗ ",  " ♘ ",  " ♖ "]]
-    @display_board = @board
+    @display_board = [[" ♜ " , " ♞ ",  " ♝ ", " ♛ ",  " ♚ ",  " ♝ ",  " ♞ ",  " ♜ "], [ " ♟ ",  " ♟ ",  " ♟ ",  " ♟ ",  " ♟ ",  " ♟ ",  " ♟ ", " ♟ "], [nil, " ♙ ",nil,nil,nil,nil,nil,nil], [nil,nil,nil,nil,nil, " ♙ ",nil,nil], [nil,nil,nil,nil,nil,nil,nil,nil],[" ♙ ",  " ♙ ",  " ♙ ", " ♙ ",  " ♙ ",nil ,  " ♙ "], [" ♖ ",  " ♘ ",  " ♗ ",  " ♕ ",  " ♔ ", " ♗ ",  " ♘ ",  " ♖ "]]
     @col_letters = [" a ", " b ", " c "," d "," e "," f "," g "," h "]
     @whitespace = "  "
   end
@@ -71,8 +70,9 @@ def recursive_move_check(piece, check_x=0, check_y=0, valid_before_bounds_check=
         valid_before_bounds_check << [check_x,check_y]
         recursive_move_check(piece, check_x, check_y, valid_before_bounds_check)
       else
-        return valid_moves(valid_before_bounds_check) #base case for if it runs into a guy
+        next #base case for if it runs into a guy
       end
+      return valid_moves(valid_before_bounds_check)
     end
 
   end
@@ -120,16 +120,20 @@ class Piece
   attr_accessor :color, :moves, :location, :name
   attr_reader :display
   def initialize(color = "white")
+    @color = color
+    @moves = moves
+    @location = location
+    @name = name
     @all_adjacent = [[0, 1],[0, -1],[1,0],[-1,0],[1,1],[-1,1],[1,-1],[-1,-1]]
   end
 end
 
 
 class Pawn < Piece
-  attr_accessor :moves, :first_move?, :capturing?
-  def initialize(color = "white")
+  attr_accessor :first_move?, :capturing?
+  def initialize(color = "white", first_move? = false)
     color == "white" ? @icon = "♟" : @icon = '♙'
-    self.first_move? if self.location[0] == 1 || self.location[0] == 6 #initial row value for pawns
+    self.first_move? = true if self.location[0] == 1 || self.location[0] == 6 #initial row value for pawns
     moves = [[0, 1]]
     moves << [0,2] if first_move?
     moves << [1,1] if capturing?
@@ -140,7 +144,6 @@ end
 
   # TODO: deal with possible_moves method
   class Rook < Piece
-    attr_accessor :moves
     def initialize(color = "white")
       color == "white" ? @icon = "♜" : @icon = '♖'
       moves = @all_adjacent - [1, 1] - [1, -1] - [-1, 1] - [-1, -1]

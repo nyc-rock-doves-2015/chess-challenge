@@ -1,4 +1,5 @@
-
+class Game
+  attr_accessor :board, :view
 def initialize(board, view)
   @board = Board.new(args)
   @view = View.new
@@ -37,6 +38,7 @@ def turns(player)
 
 
   end
+end
 
 class View
 
