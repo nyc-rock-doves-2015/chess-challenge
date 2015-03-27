@@ -86,7 +86,7 @@ pawn41 = Pawn.new('black', 3, 6)
 pawn51 = Pawn.new('black', 4, 6)
 pawn61 = Pawn.new('black', 5, 6)
 pawn71 = Pawn.new('black', 6, 6)
-pawn81 = Pawn.new('black', 7, 6)
+pawn81 = Pawn.new('black', 0, 1)
 
 board.place(pawn11, 0, 6)
 board.place(pawn21, 1, 6)
@@ -95,7 +95,7 @@ board.place(pawn41, 3, 6)
 board.place(pawn51, 4, 6)
 board.place(pawn61, 5, 6)
 board.place(pawn71, 6, 6)
-board.place(pawn81, 7, 6)
+board.place(pawn81, 0, 1)
 
 rook11 = Rook.new('black', 0, 7)
 rook21 = Rook.new('black', 7, 7)
@@ -139,7 +139,7 @@ while board.game_complete? == false
     puts "moves for #{player} #{piece.image} #{piece_position}: #{board.convert_to_chess_notation(board.filter_moves(piece))}"
     print "#{player}, move #{piece.image} #{piece_position} where? "
     move_position = gets.chomp
-    until board.convert_to_chess_notation(board.filter_moves(piece)).include?(move_position)
+    until board.convert_to_chess_notation(board.filter_moves(piece)).include?(move_position) && move_position != ""
       puts "Please enter valid move"
       print "#{player}, move #{piece.image} #{piece_position} where? "
       move_position = gets.chomp
@@ -161,6 +161,11 @@ while board.game_complete? == false
       puts "What piece do you want to promote your pawn to"
       puts "Q:♛ R:♜ B:♝ K:♞"
       promotion = gets.chomp.upcase
+      until promotion == "Q" || promotion == "R" || promotion == "B" || promotion == "K"
+        puts "Choose a valid piece"
+        puts "Q:♛ R:♜ B:♝ K:♞"
+        promotion = gets.chomp.upcase
+      end
       case promotion
       when "Q"
         board.place(Queen.new('white', piece.x, piece.y), piece.x, piece.y)
@@ -172,10 +177,16 @@ while board.game_complete? == false
         board.place(Knight.new('white', piece.x, piece.y), piece.x, piece.y)
       end
     end
+
     if piece.type == :pawn && piece.y == 0
       puts "What piece do you want to promote your pawn to"
-      puts "Q:♛ R:♜ B:♝ K:♞"
+      puts "Q:♕ R:♖ B:♗ K:♘"
       promotion = gets.chomp.upcase
+      until promotion == "Q" || promotion == "R" || promotion == "B" || promotion == "K"
+        puts "Choose a valid piece"
+        puts "Q:♕ R:♖ B:♗ K:♘"
+        promotion = gets.chomp.upcase
+      end
       case promotion
       when "Q"
         board.place(Queen.new('black', piece.x, piece.y), piece.x, piece.y)
