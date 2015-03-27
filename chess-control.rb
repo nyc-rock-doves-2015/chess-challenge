@@ -1,6 +1,6 @@
 require_relative 'chess-model'
 require_relative 'chess-view'
-# require_relative 'possible-moves-hash'
+require_relative 'possible-moves-hash'
 
 class Control
   attr_reader :view, :model
@@ -50,13 +50,13 @@ class Control
 
     if MOVES[piece_to_move.class.name.downcase][current].include?(destination)
       if tile_to_go == nil
-        return true
+        destination_valid = true
       else #if not empty
         if piece_to_move.color == tile_to_go.color
           puts "You cannot move your piece to #{destination}"
-          return false
+          destination_valid = false
         else
-          return true
+          destination_valid = true
         end
       end
     end
