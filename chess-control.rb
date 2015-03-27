@@ -54,11 +54,13 @@ class Control
     @model.board.each do |spot, piece|
       if spot.include?('1') && piece.class.name == "Black_pawn"
         black_promotion[spot] = piece
+        @promotion_spot = spot
       end
     end
     @model.board.each do |spot, piece|
       if spot.include?('8') && piece.class.name == "White_pawn"
         white_promotion[spot] = piece
+        @promotion_spot = spot
       end
     end
     if black_promotion.length > 0 || white_promotion.length > 0
@@ -69,7 +71,9 @@ class Control
   end
 
   def promote
+    if check_promote?
 
+    end
   end
 
   def ask_move(color)
@@ -94,6 +98,7 @@ class Control
     place
 
     p check_promote?
+    p @promotion_spot
 
   end
 
