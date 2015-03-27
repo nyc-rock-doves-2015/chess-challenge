@@ -1,4 +1,4 @@
-# require_relative "possible-moves-hash"
+# require_relative 'possible-moves-hash'
 # Model
 class Board
   attr_accessor :board
@@ -126,9 +126,11 @@ class Board
     # key: piece type # value: hash
     #                             # key: current spot # value: destination
     # if MOVES[piece][current].include?(destination)
-      @board[destination] = @board[current]
-      @board[current] = nil
-    # end
+    @board[destination] = @board[current]
+    @board[current] = nil
+    if @board[current] == nil
+      return false
+    end
   end
 end
 

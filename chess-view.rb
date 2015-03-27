@@ -24,8 +24,12 @@ class View
     end
   end
 
+  def invalid_prompt
+    puts "Invalid entry or move not possible."
+  end
+
   def current_prompt
-    puts "Initial Spot"
+    puts "Initial Spot?"
     @current = gets.chomp.upcase
   end
   def destination_prompt
