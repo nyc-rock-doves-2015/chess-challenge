@@ -32,11 +32,11 @@ class View
 
   def current_prompt(color)
     puts "#{color}'s turn."
-    puts "Initial Spot?"
+    puts "Piece to move? (i.e. A3, D7..)"
     @current = gets.chomp.upcase
   end
   def destination_prompt
-    puts "Destination?"
+    puts "Destination? (i.e. A3, D7..)"
     @destination = gets.chomp.upcase
   end
 

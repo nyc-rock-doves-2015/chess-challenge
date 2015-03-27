@@ -82,12 +82,12 @@ class Control
       @view.to_s(@model.board)
 
       loop do
-        ask_move("white")
+        ask_move("WHITE")
         @model.move_piece(@view.current, @view.destination)
         @view.clear!
         @view.to_s(@model.board)
 
-        ask_move("black")
+        ask_move("BLACK")
         @model.move_piece(@view.current, @view.destination)
         @view.clear!
         @view.to_s(@model.board)
