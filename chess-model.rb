@@ -75,9 +75,9 @@ class Board
   def new_game
     @board.map do |key, value|
       if key.to_s.include?('2')
-        @board[key] = Pawn.new('white')
+        @board[key] = White_pawn.new('white')
       elsif key.to_s.include?('7')
-        @board[key] = Pawn.new('black')
+        @board[key] = Black_pawn.new('black')
       elsif key == 'A1'
         @board[key] = Rook.new('white')
       elsif key == 'H1'
@@ -95,13 +95,13 @@ class Board
       elsif key == 'G8'
         @board[key] = Knight.new('black')
       elsif key == 'C1'
-        @board[key] = Bishop.new('white', 'black')
+        @board[key] = Black_sq_bishop.new('white')
       elsif key == 'F1'
-        @board[key] = Bishop.new('white', 'white')
+        @board[key] = White_sq_bishop.new('white')
       elsif key == 'C8'
-        @board[key] = Bishop.new('black', 'white')
+        @board[key] = White_sq_bishop.new('black')
       elsif key == 'F8'
-        @board[key] = Bishop.new('black', 'black')
+        @board[key] = Black_sq_bishop.new('black')
       elsif key == 'D1'
         @board[key] = Queen.new('white')
       elsif key == 'D8'
@@ -158,16 +158,20 @@ class Queen
   end
 end
 
-class Bishop
-  attr_reader :color, :glyph, :tile_color
-  def initialize(color, tile_color)
+class Black_sq_bishop
+  attr_reader :color, :glyph
+  def initialize(color)
     @color = color
-    @tile_color = tile_color
-    if @color == "black"
-      @glyph = "♝"
-    else
-      @glyph = "♗"
-    end
+    @glyph = "♝"
+  end
+end
+
+class White_sq_bishop
+  attr_reader :color, :glyph
+  def initialize(color)
+    @color = color
+    @color == color
+    @glyph = "♗"
   end
 end
 
@@ -195,15 +199,19 @@ class Rook
   end
 end
 
-class Pawn
+class Black_pawn
   attr_reader :color, :glyph
   def initialize(color)
     @color = color
-    if @color == "black"
-      @glyph = "♟"
-    else
-      @glyph = "♙"
-    end
+    @glyph = "♟"
+  end
+end
+
+class White_pawn
+  attr_reader :color, :glyph
+  def initialize(color)
+    @color = color
+    @glyph = "♙"
   end
 end
 
