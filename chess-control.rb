@@ -42,15 +42,17 @@ class Control
       puts "There's no piece to move at #{current}"
       current_valid = false
     else
-      puts "it's passing as true"
       current_valid = true
     end
 
     if @model.board[destination] != nil
       puts "You cannot move your piece to #{destination}"
-      destination_valid = false
+      if @model.board[current].color == @model.board[destination].color
+        return false
+      else
+        return true
+      end
     else
-      puts "it's passing as true"
       destination_valid =  true
     end
 
