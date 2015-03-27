@@ -11,7 +11,7 @@ class Control
 
   def place
     piece = @view.piece.capitalize
-    location = @view.location.downcase
+    location = @view.location.upcase
     color = @view.color.downcase
 
     @model.board[location] = Object.const_get(piece).new(color)
@@ -38,8 +38,12 @@ class Control
 
   def runner
     @view.start_prompt
-    if @view.user_input.downcase == "y"
+    if @view.start_input.downcase == "y"
       @model.new_game
+      @view.to_s(@model.board)
+      @view.current_prompt
+      @view.destination_prompt
+      @model.move_piece(@view.current, @view.destination)
       @view.to_s(@model.board)
     else
       @view.goodbye
