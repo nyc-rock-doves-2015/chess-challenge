@@ -2,12 +2,15 @@ require_relative 'chess-model'
 require_relative 'chess-view'
 require_relative 'possible-moves-hash'
 
+require 'byebug'
+
 class Control
-  attr_reader :view, :model
+  attr_reader :view, :model, :promotion_spot
 
   def initialize
     @view = View.new
     @model = Board.new
+    @promotion_spot = nil
   end
 
   def place
@@ -16,31 +19,6 @@ class Control
     color = @view.color.downcase
 
     @model.board[location] = Object.const_get(piece).new(color)
-  end
-
-  def test_runner
-   @view.start_prompt
-    if @view.start_input.downcase == "n"
-      @view.goodbye
-    else
-      @model.new_game
-      @view.clear!
-      @view.to_s(@model.board)
-
-      loop do
-        ask_move("WHITE")
-        @model.move_piece(@view.current, @view.destination)
-        @view.clear!
-        @view.to_s(@model.board)
-        break if finished?
-
-        ask_move("BLACK")
-        @model.move_piece(@view.current, @view.destination)
-        @view.clear!
-        @view.to_s(@model.board)
-        break if finished?
-      end
-    end
   end
 
   def valid?(current, destination)
@@ -70,6 +48,40 @@ class Control
     return current_valid && destination_valid
   end
 
+  def check_promote?
+    black_promotion = {}
+    p @model.board.each_key do |spot|
+      if spot.include?('1')
+        black_promotion[spot] = piece
+      end
+    end
+    # byebug
+    # black_promotion = @model.board.select {|spot, piece| spot[1] == 1}
+    # byebug
+    # white_promotion = @model.board.select {|spot, piece| spot[1] == 8}
+
+    # black_promotion.each do |spot, piece|
+    #   puts piece.class.name
+    #   # if piece.class.name == 'Black_pawn'
+    #   #   p @promotion_spot << spot
+    #   #   return true
+    # end
+
+    # white_promotion.each do |spot, piece|
+    #   puts piece.class.name
+    #   # if piece.class.name == 'White_pawn'
+    #   #   p @promotion_spot << spot
+    #   #   return true
+    #   # end
+    # end
+
+    # return false
+  end
+
+  def promote
+
+  end
+
   def ask_move(color)
     @view.current_prompt(color)
     @view.destination_prompt
@@ -80,6 +92,15 @@ class Control
 
   def finished?
     @model.board.values.count {|piece| piece.class.name == 'King'} == 1
+  end
+
+  def test_runner
+
+    @view.to_s(@model.board)
+    @view.test_prompt
+    place
+    check_promote?
+
   end
 
   def runner
@@ -116,5 +137,5 @@ class Control
 end
 
 control = Control.new
-control.runner
-# control.test_runner
+# control.runner
+control.test_runner

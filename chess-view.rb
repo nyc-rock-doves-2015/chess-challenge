@@ -1,5 +1,6 @@
 class View
-  attr_accessor :piece, :location, :color, :start_input, :current, :destination
+  attr_accessor :piece, :location, :color, :start_input, :current, :destination, :revival_piece
+
   # attr_reader :start_input
 
   def initialize
@@ -13,8 +14,6 @@ class View
     puts "Where would you like to place the piece? Use chess notation (i.e. A2, E7..)"
     @location = gets.chomp
   end
-
-
 
   def start_prompt
     puts "Do you want to play a game? (y/n)"
@@ -42,6 +41,11 @@ class View
   def destination_prompt
     puts "Destination? (i.e. A3, D7..)"
     @destination = gets.chomp.upcase
+  end
+
+  def prompt_promote
+    puts "What piece would you like to promote to? (i.e. Queen, Rook..)"
+    @revival_piece = gets.chomp.capitalize
   end
 
   def goodbye
