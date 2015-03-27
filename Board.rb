@@ -4,7 +4,7 @@ class Board
   BOARDLENGTH = 8
   attr_reader :board
   def initialize
-    @board = [Array.new(8) { Array.new(nil) }]
+    @board = Array.new(8) { Array.new(8, nil) }
     @first_row = [Rook.new, Knight.new, Bishop.new, Queen.new, King.new, Bishop.new, Knight.new, Rook.new]
     @second_row = Array.new(8) {Pawns.new}
     @board[0], @board[7] = @first_row, @first_row.reverse.map! { |piece| piece.color = "black"}
@@ -28,13 +28,14 @@ class Board
   # need this to not puts 0 to last row
   def display
     board_string = ""
+    row_length =  BOARDLENGTH
     @display_board << @col_letters
     @display_board = @display_board
     @display_board.each do |col|
       # if value is a piece, turn into ascii
       # if value is nil, turn into " "
       board_string += "#{row_num}   " + col.join(" ") + "\n"
-      BOARDLENGTH -= 1
+     row_length -= 1
     end
     puts board_string
   end
@@ -42,7 +43,7 @@ class Board
   def valid_moves(valid_moves = [])
    x = piece.location[0]
    y= piece.location[1]
-   valid_moves = move_one(x, y) if valid_moves = [] #otherwise you get values from the recursive move check
+   valid_moves = move_one(x, y) if valid_moves == [] #otherwise you get values from the recursive move check
      #filter for out_of_bounds
       #mathematical valid_moves
       #check against piece.location
@@ -95,8 +96,9 @@ def out_of_bounds?(x,y)
 end
 
   def find_piece(location_string)
-      index = string_to_index(location_string
+      index = string_to_index(location_string)
       piece = @board[index[0]][index[1]]
+      piece
   end
 
   def string_to_index(location_string)
@@ -127,7 +129,7 @@ class Pawn < Piece
   attr_accessor :moves, :first_move?, :capturing?
   def initialize(color = "white")
     color == "white" ? @icon = "♟" : @icon = '♙'
-    first_move? = true if self.location[0] == 1 || self.location[0] == 6 #initial row value for pawns
+    self.first_move? if self.location[0] == 1 || self.location[0] == 6 #initial row value for pawns
     moves = [[0, 1]]
     moves << [0,2] if first_move?
     moves << [1,1] if capturing?
