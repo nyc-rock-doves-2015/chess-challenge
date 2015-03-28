@@ -1,47 +1,49 @@
 require_relative 'chess_model'
+
  class Game
   attr_reader :board
+
   def initialize
     @board = Board.new
   end
 
   def test_board
-    pawn4 = Pawn.new('black', 1, 6)
-    pawn5 = Pawn.new('white', 2, 5)
-    pawn6 = Pawn.new('white', 4, 2)
-    pawn7 = Pawn.new('black', 4, 3)
-    board.place(pawn4, 1, 6)
-    board.place(pawn5, 2, 5)
-    board.place(pawn6, 4, 2)
-    board.place(pawn7, 4, 3)
+    # pawn4 = Pawn.new('black', 1, 6)
+    # pawn5 = Pawn.new('white', 2, 5)
+    # pawn6 = Pawn.new('white', 4, 2)
+    # pawn7 = Pawn.new('black', 4, 3)
+    # board.place(pawn4, 1, 6)
+    # board.place(pawn5, 2, 5)
+    # board.place(pawn6, 4, 2)
+    # board.place(pawn7, 4, 3)
 
-    pawn4.has_moved = true
-    pawn5.has_moved = true
+    # pawn4.has_moved = true
+    # pawn5.has_moved = true
 
-    rook1 = Rook.new('white', 4, 0)
-    rook2 = Rook.new('black', 2, 2)
-    board.place(rook1, 4, 0)
-    board.place(rook2, 2, 2)
+    # rook1 = Rook.new('white', 4, 0)
+    # rook2 = Rook.new('black', 2, 2)
+    # board.place(rook1, 4, 0)
+    # board.place(rook2, 2, 2)
 
     bishop1 = Bishop.new('white', 0, 5)
-    bishop2 = Bishop.new('black', 3, 2)
+    # bishop2 = Bishop.new('black', 3, 2)
     board.place(bishop1, 0, 5)
-    board.place(bishop2, 3, 2)
+    # board.place(bishop2, 3, 2)
 
-    queen1 = Queen.new('white', 4, 5)
-    queen2 = Queen.new('black', 1, 4)
-    board.place(queen1, 4, 5)
-    board.place(queen2, 1, 4)
+    # queen1 = Queen.new('white', 4, 5)
+    # queen2 = Queen.new('black', 1, 4)
+    # board.place(queen1, 4, 5)
+    # board.place(queen2, 1, 4)
 
     king1 = King.new('white', 3, 1)
     king2 = King.new('black', 1, 5)
     board.place(king1, 3, 1)
     board.place(king2, 1, 5)
 
-    knight1 = Knight.new('white', 6, 4)
-    knight2 = Knight.new('black', 5, 7)
-    board.place(knight1, 6, 4)
-    board.place(knight2, 5, 7)
+    # knight1 = Knight.new('white', 6, 4)
+    # knight2 = Knight.new('black', 5, 7)
+    # board.place(knight1, 6, 4)
+    # board.place(knight2, 5, 7)
 
   end
 
@@ -120,10 +122,10 @@ require_relative 'chess_model'
     board.place(queen11, 3, 7)
   end
 
-
   def clear_screen
     print "\e[2J\e[H"
   end
+
   def play
 
     players = ['white', 'black']
@@ -181,6 +183,11 @@ require_relative 'chess_model'
           puts "#{player} wins!"
           break
         end
+        board.insufficient
+        if board.game_complete == true
+          puts "insufficient material: game is a draw!"
+          break
+        end
         sleep(1)
       end
     end
@@ -197,6 +204,7 @@ require_relative 'chess_model'
       board.place(board.board[7][7], 5, 7)
     end
   end
+
   def validate_move_selection(player, piece, piece_position, board, valid_moves)
     puts "moves for #{player} #{piece.image} #{piece_position}: #{board.convert_to_chess_notation(valid_moves)}"
     puts "press enter to select another piece."
@@ -224,7 +232,6 @@ require_relative 'chess_model'
     end
     [piece, piece_position]
   end
-
 
   def promotion(piece,board,player,row)
     if piece.class == Pawn && piece.y == row

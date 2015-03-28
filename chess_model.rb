@@ -93,6 +93,19 @@ class Board
     @game_complete = true if king_count == 1
   end
 
+  def insufficient
+    piece_count = 0
+    insuff_count = 0
+    @board.each do |row|
+      row.each do |cell|
+        next if cell == "-"
+        piece_count += 1
+        insuff_count += 1 if cell.class == King || cell.class == Bishop || cell.class == Knight
+      end
+    end
+    @game_complete = true if insuff_count == piece_count && piece_count <= 3
+  end
+
   def save_board_state
     save_state = @board.flatten.dup
     save_state.map! do |piece|
