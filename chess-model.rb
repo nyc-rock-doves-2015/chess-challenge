@@ -1,9 +1,6 @@
-# require_relative 'possible-moves-hash'
-# Model
 class Board
   attr_accessor :board
   def initialize
-    # Empty board: key = spot, value = piece
     @board = {
       'A8' => nil,
       'B8' => nil,
@@ -114,23 +111,10 @@ class Board
     end
   end
 
+
   def move_piece(current, destination)
-    # Refer back to self.hash to see what piece is in the 'current' position
-    # destination?
-    # !between?
-    # empty?
-    # enemy?
-    # king?
-    # friend?
-    # BIG_HASH
-    # key: piece type # value: hash
-    #                             # key: current spot # value: destination
-    # if MOVES[piece][current].include?(destination)
     @board[destination] = @board[current]
     @board[current] = nil
-    if @board[current] == nil
-      return false
-    end
   end
 end
 
@@ -221,24 +205,3 @@ class White_pawn
     @glyph = "♙"
   end
 end
-
-class Moves
-  def initialize
-    # BIG HASH
-  end
-end
-
-
-# board = Board.new
-# p board.board
-# board.new_game
-# board.move_chess
-# # p board.board
-# board.board.each do |key, value|
-#   print key
-#   print value
-#   puts
-# end
-
-# glendalys = Queen.new('black')
-# glendalys.class.name

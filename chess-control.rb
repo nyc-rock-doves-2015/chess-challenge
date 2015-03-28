@@ -1,8 +1,7 @@
 require_relative 'chess-model'
 require_relative 'chess-view'
 require_relative 'possible-moves-hash'
-
-require 'byebug'
+# require 'byebug'
 
 class Control
   attr_reader :view, :model, :promotion_spot
@@ -17,7 +16,6 @@ class Control
     piece = @view.piece.capitalize
     location = @view.location.upcase
     color = @view.color.downcase
-
     @model.board[location] = Object.const_get(piece).new(color)
   end
 
@@ -37,6 +35,7 @@ class Control
         destination_valid = true
       else #if not empty
         if piece_to_move.color == tile_to_go.color
+          @view.clear!
           puts "You cannot move your piece to #{destination}"
           destination_valid = false
         else
@@ -83,6 +82,8 @@ class Control
   end
 
   def ask_move(color)
+    @view.clear!
+    @view.to_s(@model.board)
     @view.current_prompt(color)
     @view.destination_prompt
     if !valid?(@view.current, @view.destination)
@@ -90,6 +91,64 @@ class Control
     end
   end
 
+###########
+
+  def between_check(start, dest)
+    if move_direction(start, dest) == "linear"
+      puts check_linear(start, dest)
+      return check_linear(start, dest)
+    elsif move_direction(start, dest) == "diagonal"
+      determine_diagonal_direction(start, dest)
+    end
+  end
+
+  def move_direction(start, dest)
+    start[0] != dest[0] && start[1] != dest[1] ? "diagonal" : "linear"
+  end
+
+  def check_linear(start, dest)
+    if start[0] == dest[0]
+      if (start[1].ord + 1).chr != dest[1]
+        file = start[0]
+        ((start[1].ord + 1).chr..dest[1]).each { |rank|
+          @model.board[file + rank] == nil ? next : (return "Obstructed")
+        start = file + rank}
+      end
+    elsif start[1] == dest[1]
+      if (start[0].ord + 1).chr != dest[0]
+        rank = start[1]
+        (start[0]..dest[0]).each { |file|
+          @model.board[file + rank] == nil ? next : (return "Obstructed")
+          start = file + rank}
+      end
+    end
+    "Valid"
+  end
+
+  def check_diagonal(start, dest, diag_direction)
+    file_increment, rank_increment  = 1, 1 if diag_direction == "up-right"
+    file_increment, rank_increment = -1, 1 if diag_direction == "up-left"
+    file_increment, rank_increment = 1, -1 if diag_direction == "down-right"
+    file_increment, rank_increment = -1, -1 if diag_direction == "down-left"
+    current_check = start
+    puts (current_check[0].ord + file_increment).chr
+    puts (current_check[1].to_i + rank_increment).to_s
+
+    until current_check == dest
+      current_check = ((current_check[0].ord + file_increment).chr + (current_check[1].to_i + rank_increment).to_s)
+      @model.board[current_check] == nil || current_check == dest ? next : (puts "Obstructed")
+    end
+
+  end
+
+  def determine_diagonal_direction(start, dest)
+    check_diagonal(start, dest, "up-right") if start[0] < dest[0] && start[1] < dest[1]
+    check_diagonal(start, dest, "up-left") if start[0] > dest[0] && start[1] < dest[1]
+    check_diagonal(start, dest, "down-right") if start[0] < dest[0] && start[1] > dest[1]
+    check_diagonal(start, dest, "down-left") if start[0] > dest[0] && start[1] > dest[1]
+  end
+
+###########
   def finished?
     @model.board.values.count {|piece| piece.class.name == 'King'} == 1
   end
@@ -111,18 +170,19 @@ class Control
       @model.new_game
       @view.clear!
       @view.to_s(@model.board)
-
       loop do
         ask_move("WHITE")
+        ask_move("WHITE") until between_check(@view.current, @view.destination) == "Valid"
         @model.move_piece(@view.current, @view.destination)
-        @view.clear!
         @view.to_s(@model.board)
+
         if finished?
           @view.winner!("WHITE")
           break
         end
 
         ask_move("BLACK")
+        ask_move("BLACK") until between_check(@view.current, @view.destination) == "Valid"
         @model.move_piece(@view.current, @view.destination)
         @view.clear!
         @view.to_s(@model.board)
@@ -137,5 +197,5 @@ class Control
 end
 
 control = Control.new
-# control.runner
-control.test_runner
+control.runner
+# control.test_runner

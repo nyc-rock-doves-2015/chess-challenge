@@ -18,7 +18,7 @@ class View
   def start_prompt
     puts "Do you want to play a game? (y/n)"
     @start_input = gets.chomp
-    choices = ['y','n']
+    choices = ['y','n', 'yes', 'no']
     if !choices.include?(@start_input.downcase)
       puts "Invalid entry."
       start_prompt
@@ -38,6 +38,7 @@ class View
     puts "Piece to move? (i.e. A3, D7..)"
     @current = gets.chomp.upcase
   end
+
   def destination_prompt
     puts "Destination? (i.e. A3, D7..)"
     @destination = gets.chomp.upcase
