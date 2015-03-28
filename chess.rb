@@ -1,4 +1,4 @@
-require_relative "chess_model.rb"
+require_relative 'chess_model'
 
 # class Game
 
@@ -121,12 +121,18 @@ end
 
 players = ['white', 'black']
 
-while board.game_complete? == false
+while board.game_complete == false
 
   players.each_with_index do |player, index|
     clear_screen
     puts board
     board.turn += 1
+    if board.checkmate?(player)
+      puts "Checkmate!"
+      puts "#{players[index - 1]} wins"
+      board.game_complete = true
+      break
+    end
     puts "#{player}'s turn"
     puts "You are in check!" if board.check?(player)
     print "#{player}, your move? "
@@ -202,12 +208,13 @@ while board.game_complete? == false
         board.place(Knight.new('black', piece.x, piece.y), piece.x, piece.y)
       end
     end
-    if board.game_complete?
+
+    board.game_complete?
+    if board.game_complete == true
       puts "#{player} wins!"
       break
     end
     sleep(1)
   end
-
 end
 

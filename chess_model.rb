@@ -1,12 +1,13 @@
 require 'byebug'
 
 class Board
-  attr_accessor :turn
+  attr_accessor :turn, :game_complete
   attr_reader :board
 
   def initialize
     @board = Array.new(8) {["-","-","-","-","-","-","-","-"]}
     @turn = 0
+    @game_complete = false
     @board_map = {
       "a" => 0,
       "b" => 1,
@@ -98,8 +99,8 @@ class Board
         king_count += 1 if cell.type == :king
       end
     end
-    return true if king_count == 1
-    false
+    @game_complete = true if king_count == 1
+    @game_complete = false
   end
 
   def filter_moves(piece)
@@ -202,25 +203,29 @@ class Board
     invalid_moves = []
     original_x = piece.x
     original_y = piece.y
-    # old_board = Marshal.load(Marshal.dump(@board))
-    # p old_board
     filtered_moves.map do |move|
       stored_spot = @board[move[0]][move[1]]
-      # old_board = Marshal.load(Marshal.dump(@board))
       place(piece, move[0], move[1])
-      # p @board
-      # byebug
       invalid_moves << move if check?(piece.color)
-      # return @board
-      # old_board = @board
       place(piece, original_x, original_y)
       place(stored_spot, move[0], move[1])
-      # return @board
-      # byebug
     end
     valid_moves = filtered_moves - invalid_moves
     valid_moves
   end
+
+  def checkmate?(player)
+    @board.each do |row|
+      row.each do |piece|
+        next if piece == "-"
+        next if piece.color != player
+        move_array = remove_bad_moves(filter_moves(piece), piece)
+        return false if !move_array.empty?
+      end
+    end
+    true
+  end
+
 
   def check_next_spot(piece, direction, x, y, move_count, move_array = [])
     return move_array if move_count == 0
@@ -237,14 +242,14 @@ class Board
     move_array
   end
 
-  def check?(player, any_board = @board)
-    any_board.each do |row|
+  def check?(player)
+    @board.each do |row|
       row.each do |piece|
         next if piece == "-"
         next if piece.color == player
         piece_move_array = filter_moves(piece) #array of arrays
         piece_move_array.each do |position|
-          position_piece = any_board[position[0]][position[1]]
+          position_piece = @board[position[0]][position[1]]
           next if position_piece == "-"
           return true if position_piece.type == :king
         end
