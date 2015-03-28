@@ -1,13 +1,14 @@
 require 'byebug'
 
 class Board
-  attr_accessor :turn, :game_complete
+  attr_accessor :turn, :game_complete, :board_state_hash
   attr_reader :board
 
   def initialize
     @board = Array.new(8) {["-","-","-","-","-","-","-","-"]}
     @turn = 0
     @game_complete = false
+    @board_state_hash = {}
     @board_map = {
       "a" => 0,
       "b" => 1,
@@ -101,6 +102,20 @@ class Board
     end
     @game_complete = true if king_count == 1
     @game_complete = false
+  end
+
+  def save_board_state
+    save_state = @board.flatten.dup
+    save_state.map! do |piece|
+      if piece != "-"
+        piece = "#{piece.color} #{piece.type}"
+      end
+    end
+    if @board_state_hash.has_key?(save_state)
+      @board_state_hash[save_state] += 1
+    else
+      @board_state_hash[save_state] = 1
+    end
   end
 
   def filter_moves(piece)
