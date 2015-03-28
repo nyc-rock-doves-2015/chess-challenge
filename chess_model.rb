@@ -47,9 +47,10 @@ class Board
   #create a string of all moves in chess notation
   def convert_to_chess_notation(filter_moves_array)
     move_list = ""
-    filter_moves_array.sort.each do |move|
+    filter_moves_array.sort.each_with_index do |move, index|
       move_list << @board_map.invert[move[0]].to_s
-      move_list << "#{move[1] + 1}, "
+      move_list << "#{move[1] + 1}"
+      move_list << ", " if index != filter_moves_array.length - 1
     end
     move_list
   end
@@ -97,7 +98,7 @@ class Board
     false
   end
 
-  def filter_moves(piece, moves_array = [] )
+  def filter_moves(piece)
     if piece.type == :pawn
       pawn_filter_moves(piece)
     elsif piece.type == :rook
@@ -202,13 +203,13 @@ class Board
     return move_array if @board[x_new][y_new] != "-" && @board[x_new][y_new].color == piece.color
     if @board[x_new][y_new] == "-"
       move_array << [x_new, y_new]
-      open = check_next_spot(piece, direction, x_new, y_new, move_count - 1, move_array)
-      if open
-        return move_array
-      else
-        move_array.pop
-        return false
-      end
+      check_next_spot(piece, direction, x_new, y_new, move_count - 1, move_array)
+      # if open
+      #   return move_array
+      # else
+      #   move_array.pop
+      #   return false
+      # end
     elsif @board[x_new][y_new] != "-" && @board[x_new][y_new] != piece.color && piece.type != :pawn
       move_array << [x_new, y_new]
     end

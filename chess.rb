@@ -152,7 +152,7 @@ while board.game_complete? == false
     elsif piece.type == :king && move_position == "g1" && piece.has_moved == false
       board.place(board.board[7][0], 5, 0)
     elsif piece.type == :king && move_position == "c8" && piece.has_moved == false
-      board.place(board.board[0][7], 3, 7)
+       board.place(board.board[0][7], 3, 7)
     elsif piece.type == :king && move_position == "g8" && piece.has_moved == false
       board.place(board.board[7][7], 5, 7)
     end
