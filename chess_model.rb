@@ -40,7 +40,7 @@ class Board
     @board.transpose.reverse.map do |row|
       board_string << "#{row_number} "
       row.map do |cell|
-        board_string << "  " if cell == "-"
+        board_string << ". " if cell == "-"
         board_string << "#{cell.image} " if cell != "-"
       end
       row_number -= 1
@@ -93,6 +93,19 @@ class Board
     @game_complete = true if king_count == 1
   end
 
+  def insufficient
+    piece_count = 0
+    insuff_count = 0
+    @board.each do |row|
+      row.each do |cell|
+        next if cell == "-"
+        piece_count += 1
+        insuff_count += 1 if cell.class == King || cell.class == Bishop || cell.class == Knight
+      end
+    end
+    @game_complete = true if insuff_count == piece_count && piece_count <= 3
+  end
+
   def save_board_state
     save_state = @board.flatten.dup
     save_state.map! do |piece|
@@ -112,7 +125,7 @@ class Board
       pawn_filter_moves(piece)
     elsif piece.class == King
       king_filter_moves(piece)
-    else 
+    else
       piece_filter_moves(piece, piece.directions, piece.move_count)
     end
   end
