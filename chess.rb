@@ -4,42 +4,44 @@ require_relative 'chess_model'
 
 board = Board.new
 
-pawn4 = Pawn.new('black', 1, 6)
-pawn5 = Pawn.new('white', 2, 5)
-pawn6 = Pawn.new('white', 4, 2)
-pawn7 = Pawn.new('black', 4, 3)
-board.place(pawn4, 1, 6)
-board.place(pawn5, 2, 5)
-board.place(pawn6, 4, 2)
-board.place(pawn7, 4, 3)
+# pawn4 = Pawn.new('black', 1, 6)
+# pawn5 = Pawn.new('white', 2, 5)
+# pawn6 = Pawn.new('white', 4, 2)
+# pawn7 = Pawn.new('black', 4, 3)
+# board.place(pawn4, 1, 6)
+# board.place(pawn5, 2, 5)
+# board.place(pawn6, 4, 2)
+# board.place(pawn7, 4, 3)
 
-pawn4.has_moved = true
-pawn5.has_moved = true
+# pawn4.has_moved = true
+# pawn5.has_moved = true
 
-rook1 = Rook.new('white', 4, 0)
-rook2 = Rook.new('black', 2, 7)
-board.place(rook1, 4, 0)
-board.place(rook2, 2, 7)
+rook1 = Rook.new('white', 0, 3)
+rook2 = Rook.new('white', 0, 5)
+rook3 = Rook.new('white', 2, 7)
+board.place(rook1, 0, 3)
+board.place(rook2, 0, 5)
+board.place(rook3, 2, 7)
 
-bishop1 = Bishop.new('white', 0, 5)
-bishop2 = Bishop.new('black', 3, 2)
-board.place(bishop1, 0, 5)
-board.place(bishop2, 3, 2)
+# bishop1 = Bishop.new('white', 0, 5)
+# bishop2 = Bishop.new('black', 3, 2)
+# board.place(bishop1, 0, 5)
+# board.place(bishop2, 3, 2)
 
-queen1 = Queen.new('white', 4, 5)
-queen2 = Queen.new('black', 1, 4)
-board.place(queen1, 4, 5)
-board.place(queen2, 1, 4)
+# queen1 = Queen.new('white', 4, 5)
+# queen2 = Queen.new('black', 1, 4)
+# board.place(queen1, 4, 5)
+# board.place(queen2, 1, 4)
 
 king1 = King.new('white', 3, 1)
-king2 = King.new('black', 1, 5)
+king2 = King.new('black', 1, 4)
 board.place(king1, 3, 1)
-board.place(king2, 1, 5)
+board.place(king2, 1, 4)
 
-knight1 = Knight.new('white', 6, 4)
-knight2 = Knight.new('black', 5, 7)
-board.place(knight1, 6, 4)
-board.place(knight2, 5, 7)
+# knight1 = Knight.new('white', 6, 4)
+# knight2 = Knight.new('black', 5, 7)
+# board.place(knight1, 6, 4)
+# board.place(knight2, 5, 7)
 
 # puts knight1.class
 
@@ -127,11 +129,18 @@ while board.game_complete == false
     clear_screen
     puts board
     board.turn += 1
-    if board.checkmate?(player)
-      puts "Checkmate!"
-      puts "#{players[index - 1]} wins"
-      board.game_complete = true
-      break
+    if board.no_moves?(player)
+      if board.check?(player)
+        puts "Checkmate!"
+        puts "#{players[index - 1]} wins"
+        board.game_complete = true
+        break
+      else
+        puts "Stalemate!"
+        puts "Game is a draw"
+        board.game_complete = true
+        break
+      end
     end
     puts "#{player}'s turn"
     puts "You are in check!" if board.check?(player)
@@ -187,7 +196,6 @@ while board.game_complete == false
         board.place(Knight.new('white', piece.x, piece.y), piece.x, piece.y)
       end
     end
-
     if piece.type == :pawn && piece.y == 0
       puts "What piece do you want to promote your pawn to"
       puts "Q:♕ R:♖ B:♗ K:♘"
@@ -208,7 +216,6 @@ while board.game_complete == false
         board.place(Knight.new('black', piece.x, piece.y), piece.x, piece.y)
       end
     end
-
     board.game_complete?
     if board.game_complete == true
       puts "#{player} wins!"

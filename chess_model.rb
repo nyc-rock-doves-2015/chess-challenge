@@ -214,7 +214,7 @@ class Board
     valid_moves
   end
 
-  def checkmate?(player)
+  def no_moves?(player)
     @board.each do |row|
       row.each do |piece|
         next if piece == "-"
