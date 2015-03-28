@@ -40,7 +40,7 @@ class Board
     @board.transpose.reverse.map do |row|
       board_string << "#{row_number} "
       row.map do |cell|
-        board_string << "  " if cell == "-"
+        board_string << ". " if cell == "-"
         board_string << "#{cell.image} " if cell != "-"
       end
       row_number -= 1
@@ -112,7 +112,7 @@ class Board
       pawn_filter_moves(piece)
     elsif piece.class == King
       king_filter_moves(piece)
-    else 
+    else
       piece_filter_moves(piece, piece.directions, piece.move_count)
     end
   end

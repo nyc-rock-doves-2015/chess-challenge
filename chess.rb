@@ -151,6 +151,12 @@ require_relative 'chess_model'
         filtered_moves = board.filter_moves(piece)
         valid_moves = board.remove_bad_moves(filtered_moves, piece)
         move_position = validate_move_selection(player, piece, piece_position, board, valid_moves)
+        until move_position != ""
+          piece, piece_position = validate_piece(player,board)
+          filtered_moves = board.filter_moves(piece)
+          valid_moves = board.remove_bad_moves(filtered_moves, piece)
+          move_position = validate_move_selection(player, piece, piece_position, board, valid_moves)
+        end
         if board.get_piece(move_position) != "-"
           puts "#{player} captured #{players[index - 1]}'s #{board.get_piece(move_position).image} at #{move_position}"
         end
@@ -193,9 +199,10 @@ require_relative 'chess_model'
   end
   def validate_move_selection(player, piece, piece_position, board, valid_moves)
     puts "moves for #{player} #{piece.image} #{piece_position}: #{board.convert_to_chess_notation(valid_moves)}"
+    puts "press enter to select another piece."
     print "#{player}, move #{piece.image} #{piece_position} where? "
     move_position = gets.chomp
-    until board.convert_to_chess_notation(valid_moves).include?(move_position) && move_position != ""
+    until board.convert_to_chess_notation(valid_moves).include?(move_position)
       puts "Please enter valid move"
       print "#{player}, move #{piece.image} #{piece_position} where? "
       move_position = gets.chomp
