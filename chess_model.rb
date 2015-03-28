@@ -1,12 +1,13 @@
 require 'byebug'
 
 class Board
-  attr_accessor :turn
+  attr_accessor :turn, :game_complete
   attr_reader :board
 
   def initialize
     @board = Array.new(8) {["-","-","-","-","-","-","-","-"]}
     @turn = 0
+    @game_complete = false
     @board_map = {
       "a" => 0,
       "b" => 1,
@@ -20,12 +21,16 @@ class Board
   end
 
   def place(piece, x, y, has_moved = false)
-    @board[piece.x][piece.y] = "-"
-    @board[x][y] = piece
-    piece.x = x
-    piece.y = y
-    piece.has_moved = has_moved
-    piece.turn = @turn
+    if piece == "-"
+      @board[x][y] = "-"
+    else
+      @board[piece.x][piece.y] = "-"
+      @board[x][y] = piece
+      piece.x = x
+      piece.y = y
+      piece.has_moved = has_moved
+      piece.turn = @turn
+    end
   end
 
   def to_s
@@ -94,8 +99,8 @@ class Board
         king_count += 1 if cell.type == :king
       end
     end
-    return true if king_count == 1
-    false
+    @game_complete = true if king_count == 1
+    @game_complete = false
   end
 
   def filter_moves(piece)
@@ -194,6 +199,33 @@ class Board
     filtered_moves
   end
 
+  def remove_bad_moves(filtered_moves, piece)
+    invalid_moves = []
+    original_x = piece.x
+    original_y = piece.y
+    filtered_moves.map do |move|
+      stored_spot = @board[move[0]][move[1]]
+      place(piece, move[0], move[1])
+      invalid_moves << move if check?(piece.color)
+      place(piece, original_x, original_y)
+      place(stored_spot, move[0], move[1])
+    end
+    valid_moves = filtered_moves - invalid_moves
+    valid_moves
+  end
+
+  def checkmate?(player)
+    @board.each do |row|
+      row.each do |piece|
+        next if piece == "-"
+        next if piece.color != player
+        move_array = remove_bad_moves(filter_moves(piece), piece)
+        return false if !move_array.empty?
+      end
+    end
+    true
+  end
+
 
   def check_next_spot(piece, direction, x, y, move_count, move_array = [])
     return move_array if move_count == 0
@@ -204,19 +236,26 @@ class Board
     if @board[x_new][y_new] == "-"
       move_array << [x_new, y_new]
       check_next_spot(piece, direction, x_new, y_new, move_count - 1, move_array)
-      # if open
-      #   return move_array
-      # else
-      #   move_array.pop
-      #   return false
-      # end
     elsif @board[x_new][y_new] != "-" && @board[x_new][y_new] != piece.color && piece.type != :pawn
       move_array << [x_new, y_new]
     end
     move_array
   end
 
-  def check?
+  def check?(player)
+    @board.each do |row|
+      row.each do |piece|
+        next if piece == "-"
+        next if piece.color == player
+        piece_move_array = filter_moves(piece) #array of arrays
+        piece_move_array.each do |position|
+          position_piece = @board[position[0]][position[1]]
+          next if position_piece == "-"
+          return true if position_piece.type == :king
+        end
+      end
+    end
+    false
   end
 
 end
