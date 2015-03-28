@@ -4,9 +4,11 @@ require_relative 'possible-moves-hash'
 
 require 'byebug'
 
+WHITE_SQ_FILES = ['B', 'D', 'F', 'H']
+BLACK_SQ_FILES = ['A', 'C', 'E', 'G']
+
 class Control
-  attr_reader :view, :model
-  attr_accessor :promotion_spot
+  attr_accessor :promotion_spot, :view, :model
 
   def initialize
     @view = View.new
@@ -70,10 +72,33 @@ class Control
   end
 
   def promote
+    # ASK ABOUT THIS VARIABLE USAGE
+    # promotion_tile = @model.board[@promotion_spot]
+
     if @promotion_spot.include?('1')
-      @model.board[@promotion_spot] = Object.const_get(@view.revival_piece).new("black")
+      if @view.revival_piece == "Bishop"
+        if BLACK_SQ_FILES.include?(@promotion_spot[0])
+          @model.board[@promotion_spot] = Black_sq_bishop.new('black')
+          @promotion_spot = nil
+        elsif WHITE_SQ_FILES.include?(@promotion_spot[0])
+          @model.board[@promotion_spot] = White_sq_bishop.new('black')
+        end
+      else
+        @model.board[@promotion_spot] = Object.const_get(@view.revival_piece).new("black")
+        @promotion_spot = nil
+      end
     elsif @promotion_spot.include?('8')
-      @model.board[@promotion_spot] = Object.const_get(@view.revival_piece).new("white")
+      if @view.revival_piece == "Bishop"
+        if BLACK_SQ_FILES.include?(@promotion_spot[0])
+          @model.board[@promotion_spot] = Black_sq_bishop.new('white')
+          @promotion_spot = nil
+        elsif WHITE_SQ_FILES.include?(@promotion_spot[0])
+          @model.board[@promotion_spot] = White_sq_bishop.new('white')
+        end
+      else
+        @model.board[@promotion_spot] = Object.const_get(@view.revival_piece).new("white")
+        @promotion_spot = nil
+      end
     end
   end
 
@@ -100,15 +125,18 @@ class Control
   def test_runner
 
     @view.to_s(@model.board)
+
     @view.test_prompt
     place
     @view.to_s(@model.board)
+
     promotion_cycle
     @view.to_s(@model.board)
+
     @view.test_prompt
     place
     @view.to_s(@model.board)
-    # p check_promote?
+
     promotion_cycle
     @view.to_s(@model.board)
 
@@ -128,6 +156,11 @@ class Control
         @model.move_piece(@view.current, @view.destination)
         @view.clear!
         @view.to_s(@model.board)
+
+        promotion_cycle
+        @view.clear!
+        @view.to_s(@model.board)
+
         if finished?
           @view.winner!("WHITE")
           break
@@ -137,6 +170,11 @@ class Control
         @model.move_piece(@view.current, @view.destination)
         @view.clear!
         @view.to_s(@model.board)
+
+        promotion_cycle
+        @view.clear!
+        @view.to_s(@model.board)
+
         if finished?
           @view.winner!("BLACK")
           break
@@ -148,5 +186,5 @@ class Control
 end
 
 control = Control.new
-# control.runner
-control.test_runner
+control.runner
+# control.test_runner

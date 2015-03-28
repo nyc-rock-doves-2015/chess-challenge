@@ -44,8 +44,6 @@ class View
     @destination = gets.chomp.upcase
   end
 
-
-
   def prompt_promote
     puts "What piece would you like to promote to? (i.e. Queen, Rook..)"
     @revival_piece = gets.chomp.capitalize
