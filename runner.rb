@@ -1,5 +1,5 @@
 require_relative "chess"
 
 game = Game.new
-game.test_board
+game.real_board
 game.play

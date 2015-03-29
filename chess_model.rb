@@ -20,7 +20,7 @@ class Board
       "h" => 7
     }
   end
-
+ 
   def place(piece, x, y, has_moved = false)
     if piece == "-"
       @board[x][y] = "-"
@@ -151,7 +151,7 @@ class Board
       #turn = turn + 1
       if x_new > 7 || x_new < 0
         invalid_moves << move
-      # elsif @board[pawn.x + 1][pawn.y].class == :pawn && @board[pawn.x + 1][pawn.y].turn == (turn + 1)
+        # elsif @board[pawn.x + 1][pawn.y].class == :pawn && @board[pawn.x + 1][pawn.y].turn == (turn + 1)
       elsif @board[x_new][y_new] == "-"
         invalid_moves << move
       elsif @board[x_new][y_new] != "-" && @board[x_new][y_new].color == pawn.color
@@ -350,5 +350,3 @@ class Knight < Piece
   end
 
 end
-
-
