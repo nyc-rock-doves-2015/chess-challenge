@@ -20,7 +20,7 @@ class Board
       "h" => 7
     }
   end
- 
+
   def place(piece, x, y, has_moved = false)
     if piece == "-"
       @board[x][y] = "-"
@@ -63,11 +63,7 @@ class Board
 
   def validate_piece(player, piece_position)
     row, col = split_coordinates(piece_position)
-    if @board[row][col] != "-"
-      return @board[row][col].color == player
-    else
-      false
-    end
+    @board[row][col] != "-" ? (@board[row][col].color == player) : false
   end
 
   def get_piece(piece_position)
@@ -197,12 +193,10 @@ class Board
       stored_spot = @board[move[0]][move[1]]
       place(piece, move[0], move[1])
       invalid_moves << move if check?(piece.color)
-      # filtered_moves.delete(move) if check?(piece.color)}
       place(piece, original_x, original_y)
       place(stored_spot, move[0], move[1])
     end
     filtered_moves - invalid_moves
-    # filtered_moves
   end
 
   def no_moves?(player)
@@ -216,7 +210,6 @@ class Board
     end
     true
   end
-
 
   def check_next_spot(piece, direction, x, y, move_count, move_array = [])
     return move_array if move_count == 0
