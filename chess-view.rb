@@ -65,18 +65,19 @@ class View
     board_array << ['A','B','C','D','E','F','G','H']
     row_num = 8
     board_array.each do |row|
+      puts "   ------  ------  ------  ------  ------  ------  ------  ------   "
       if row_num > 0
         print row_num.to_s + "  "
       else
-        print "    "
+        print "   "
       end
       row.each do |piece|
         if piece == nil
-          print "  "
+          print "|    |"
         elsif piece.is_a? String
-          print piece + " "
+          print "| #{piece}  |"
         else
-          print piece.glyph.to_s + " "
+          print "| " + piece.glyph.to_s + "  |"
         end
         print "  "
       end
@@ -84,6 +85,33 @@ class View
       puts
     end
   end
+
+  #   board_array = []
+  #   hash.values.each_slice(8) do |pieces|
+  #     board_array << pieces
+  #   end
+  #   board_array << ['A','B','C','D','E','F','G','H']
+  #   row_num = 8
+  #   board_array.each do |row|
+  #     if row_num > 0
+  #       print row_num.to_s + "  "
+  #     else
+  #       print "    "
+  #     end
+  #     row.each do |piece|
+  #       if piece == nil
+  #         print "  "
+  #       elsif piece.is_a? String
+  #         print piece + " "
+  #       else
+  #         print piece.glyph.to_s + " "
+  #       end
+  #       print "  "
+  #     end
+  #     row_num -= 1
+  #     puts
+  #   end
+  # end
 end
 
 
