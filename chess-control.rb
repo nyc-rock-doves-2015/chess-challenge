@@ -25,21 +25,26 @@ class Control
   end
 
   def valid?(current, destination)
-    piece_to_move = @model.board[current]
-    tile_to_go = @model.board[destination]
+    if current.length != 2 || destination.length != 2
+      @view.invalid_prompt
+      return false
+    end
 
-    if piece_to_move == nil
+    @piece_to_move = @model.board[current]
+    @tile_to_go = @model.board[destination]
+
+    if @model.board[current] == nil
       puts "There's no piece to move at #{current}"
       current_valid = false
     else
       current_valid = true
     end
 
-    if MOVES[piece_to_move.class.name.downcase][current].include?(destination)
-      if tile_to_go == nil
+    if MOVES[@model.board[current].class.name.downcase][current].include?(destination)
+      if @model.board[destination] == nil
         destination_valid = true
       else #if not empty
-        if piece_to_move.color == tile_to_go.color
+        if @model.board[current].color == @model.board[destination].color
           puts "You cannot move your piece to #{destination}"
           destination_valid = false
         else
@@ -82,6 +87,7 @@ class Control
           @promotion_spot = nil
         elsif WHITE_SQ_FILES.include?(@promotion_spot[0])
           @model.board[@promotion_spot] = White_sq_bishop.new('black')
+          @promotion_spot = nil
         end
       else
         @model.board[@promotion_spot] = Object.const_get(@view.revival_piece).new("black")
@@ -94,6 +100,7 @@ class Control
           @promotion_spot = nil
         elsif WHITE_SQ_FILES.include?(@promotion_spot[0])
           @model.board[@promotion_spot] = White_sq_bishop.new('white')
+          @promotion_spot = nil
         end
       else
         @model.board[@promotion_spot] = Object.const_get(@view.revival_piece).new("white")
