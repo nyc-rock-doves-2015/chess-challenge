@@ -91,6 +91,11 @@ class Board
     piece_moves.each do |move|
       x = current_location[0] + move[0]
       y = current_location[1] + move[1]
+      #temporary fix to solve black attack line 95-98
+      if piece.respond_to?(:pawn_attack) && piece.color == "black" && move[0] > 1
+        x = move[0]
+        y = move[1]
+      end
       next if out_of_bounds?([x,y])
       if free_space?(piece, x, y)
         valid_moves << [x,y] #fix
@@ -188,7 +193,7 @@ end
 
 
 class Piece
-  attr_accessor :moves, :location, :name
+  attr_accessor :name
   attr_reader :display, :multiple_moves
   def initialize(location, color = "white")
     @icon = icon
@@ -208,7 +213,7 @@ end
 
 class Pawn < Piece
   attr_reader :color
-  attr_accessor :multiple_moves, :location #:first_move?, :capturing?
+  attr_accessor :multiple_moves, :location
   #logic for capturing?
   def initialize(location, color = "white")
     @location = location
@@ -251,7 +256,7 @@ class Pawn < Piece
     if board[x+1][y-1] != nil && (board[x+1][y-1]).color != self.color && color == "white"
       array << [x+1, y-1]
     end
-    if board[x-1][y-1] != nil && board[x-1][y-1].color != self.color && color == "black"
+    if board[x-1][y-1] != nil && board[x-1][y-1].color != color && color == "black"
       array << [x-1, y-1]
     end
     if board[x-1][y+1] != nil && board[x-1][y+1].color != self.color && color == "black"
