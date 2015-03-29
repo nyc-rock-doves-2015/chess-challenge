@@ -193,7 +193,7 @@ end
 
 
 class Piece
-  attr_accessor :name
+  attr_accessor :name, :location
   attr_reader :display, :multiple_moves
   def initialize(location, color = "white")
     @icon = icon
