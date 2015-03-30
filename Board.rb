@@ -213,7 +213,7 @@ end
 
 class Pawn < Piece
   attr_reader :color
-  attr_accessor :multiple_moves, :location
+  attr_accessor :multiple_moves
   #logic for capturing?
   def initialize(location, color = "white")
     @location = location
