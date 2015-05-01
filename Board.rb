@@ -110,6 +110,7 @@ class Board
         next
       end
     end
+    p valid_moves
     valid_moves
   end
 
@@ -210,7 +211,7 @@ end
 
 
 class Piece
-  attr_accessor :color, :moves, :location, :name
+  attr_accessor :name, :location
   attr_reader :display, :multiple_moves
   def initialize(location, color = "white")
     @icon = icon
